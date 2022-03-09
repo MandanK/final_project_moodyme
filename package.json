@@ -3,15 +3,27 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "migrate": "dotenv ley"
   },
   "dependencies": {
+    "@emotion/babel-plugin": "^11.7.2",
+    "@emotion/react": "^11.8.1",
+    "bcrypt": "^5.0.1",
+    "camel-case": "^4.1.2",
+    "camelcase-keys": "^7.0.2",
+    "dotenv-cli": "^5.0.0",
+    "dotenv-safe": "^8.2.0",
+    "emotion": "^11.0.0",
+    "ley": "^0.7.1",
     "next": "latest",
     "next-pwa": "^5.4.1",
+    "postgres": "^1.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "17.0.4",
     "@types/react": "17.0.38",
     "typescript": "4.5.4"
