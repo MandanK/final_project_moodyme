@@ -1,10 +1,11 @@
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import ResponseCache from 'next/dist/server/response-cache';
+import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
 import {
-  createUser,
-  getUserByUsername,
+  createSession,
   getUserWithPasswordHashByUsername,
+  User,
 } from '../../util/database';
 
 export default async function loginHandler(
@@ -56,10 +57,27 @@ export default async function loginHandler(
       return; //Important: will prevent "Headers already sent" error
     }
 
-    //TODO: Return created session in cookie
+    // 1. Create a new token
+    const token = crypto.randomBytes(64).toString('base64');
 
-    response.status(201).json({ user: { id: userWithPasswordHash.id } });
-    return; // Important: will prevent "Headers already sent" error
+    // 2. Create the session
+    const session = await createSession(token, userWithPasswordHash.id);
+
+    // 3. Serialize the cookie
+    const serializedCookie = await createSerializedRegisterSessionTokenCookie(
+      session.token,
+    );
+
+    // 4. Add the cookie to the header response
+    response
+      .status(201)
+      .setHeader('Set-Cookie', serializedCookie)
+      .json({
+        user: {
+          id: userWithPasswordHash.id,
+        },
+      });
+    return;
   }
 
   response
