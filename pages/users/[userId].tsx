@@ -5,12 +5,14 @@ import { getUserById, User } from '../../util/database';
 
 type Props = {
   user?: User;
+  userObject: { username: string };
+
 };
 
 export default function UserDetail(props: Props) {
   if (!props.user) {
     return (
-      <Layout>
+      <Layout userObject={props.userObject}>
         <Head>
           <title> User not found</title>
           <meta name="description" content="User not found" />

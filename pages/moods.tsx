@@ -12,16 +12,18 @@ const moodStyle = css`
 `;
 
 type Props = {
+  userObject: { username: string };
   moods: Mood[];
 };
 
 export default function Moods(props: Props) {
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>Moods</title>
-        <meta description="A list of different moods" />
+        <meta name="description" content="A list of different moods" />
       </Head>
+
       <h1>How are you feeling?</h1>
       {props.moods.map((mood) => {
         return (

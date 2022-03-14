@@ -17,15 +17,15 @@ const headerStyles = css`
   }
 `;
 
-export default function Header() {
+export default function Header(props) {
   return (
     <header css={headerStyles}>
       <div>
         <Link href="/">
           <a>Home</a>
         </Link>
-        <Link href="/products">
-          <a data-test-id="products-link">User's Account</a>
+        <Link href="/users/protected-user">
+          <a data-test-id="products-link">Protected User</a>
         </Link>
         <Link href="/about">
           <a data-test-id="cart-link">
@@ -36,6 +36,10 @@ export default function Header() {
           <a data-test-id="products-link">Moods</a>
         </Link>
       </div>
+      {props.userObject && <div>{props.userObject.username}</div>}
+      <Link href="/logout">
+        <a data-test-id="products-link">Logout</a>
+      </Link>
       <Link href="/login">
         <a data-test-id="products-link">Login</a>
       </Link>

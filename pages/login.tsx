@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { getValidSessionByToken } from '../util/database';
 
 const errorStyle = css`
   color: red;
@@ -10,14 +12,19 @@ const errorStyle = css`
 
 type Errors = { message: string }[];
 
-export default function Login() {
+type Props = {
+  refreshUserProfile: () => void;
+  userObject: { username: string };
+};
+
+export default function Login(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
 
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>Login</title>
         <meta name="description" content="Login on this website" />
@@ -67,7 +74,8 @@ export default function Login() {
           // Login worked, clear the errors and redirected to the homepage.
 
           setErrors([]);
-          await router.push(`/users/${loginResponseBody.user.id}`); // Here I am telling to take the user to the home page.
+          props.refreshUserProfile();
+          await router.push(`/`); // Here I am telling to take the user to the home page.
         }}
       >
         <label>
@@ -95,4 +103,29 @@ export default function Login() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // 1. check if there is a token and is valid from the cookie
+  const token = context.req.cookies.sessionToken;
+
+  if (token) {
+    // 2. if it is valid and redirect
+    const session = await getValidSessionByToken(token);
+
+    if (session) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  // 3. otherwise render the page
+
+  return {
+    props: {},
+  };
 }

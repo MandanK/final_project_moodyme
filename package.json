@@ -9,6 +9,7 @@
   "dependencies": {
     "@emotion/babel-plugin": "^11.7.2",
     "@emotion/react": "^11.8.1",
+    "@types/cookie": "^0.4.1",
     "bcrypt": "^5.0.1",
     "camel-case": "^4.1.2",
     "camelcase-keys": "^7.0.2",

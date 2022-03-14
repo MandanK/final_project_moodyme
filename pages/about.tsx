@@ -1,10 +1,14 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
 
-export default function About() {
+type Props = {
+  userObject: { username: string };
+};
+
+export default function About(props: Props) {
   return (
     <div>
-      <Layout>
+      <Layout userObject={props.userObject}>
         <Head>
           <title>About</title>
           <meta name="description" content="About the application" />
@@ -21,7 +25,7 @@ export default function About() {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum
-          </p>
+        </p>
       </Layout>
     </div>
   );

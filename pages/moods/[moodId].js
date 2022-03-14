@@ -4,7 +4,7 @@ import { getMood } from '../../util/database';
 
 export default function SingleMood(props) {
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>{props.mood.name}</title>
         <meta description={`${props.mood.name} mood`} />

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import Layout from '../components/Layout';
 
 const containerStyle = css`
@@ -67,9 +68,20 @@ const logoStyle = css`
   height: 1em;
 `;
 
-export default function Home() {
+type Props = {
+  refreshUserProfile: () => void;
+  userObject: { username: string };
+};
+
+export default function Home(props: Props) {
+  // ! This is the part to remove profile after login, but not working
+
+  useEffect(() => {
+    props.refreshUserProfile;
+  }, [props]);
+
   return (
-    <Layout>
+    <Layout userObject={props.userObject}>
       <Head>
         <title>Home</title>
         <meta name="description" content="You're here to feel better" />
