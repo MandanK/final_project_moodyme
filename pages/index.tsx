@@ -74,12 +74,6 @@ type Props = {
 };
 
 export default function Home(props: Props) {
-  // ! This is the part to remove profile after login, but not working
-
-  useEffect(() => {
-    props.refreshUserProfile;
-  }, [props]);
-
   return (
     <Layout userObject={props.userObject}>
       <Head>

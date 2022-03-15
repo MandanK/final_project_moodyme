@@ -37,9 +37,7 @@ export default function Header(props) {
         </Link>
       </div>
       {props.userObject && <div>{props.userObject.username}</div>}
-      <Link href="/logout">
-        <a data-test-id="products-link">Logout</a>
-      </Link>
+      <a href="/logout">Logout</a>
       <Link href="/login">
         <a data-test-id="products-link">Login</a>
       </Link>

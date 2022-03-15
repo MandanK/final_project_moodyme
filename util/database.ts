@@ -57,6 +57,7 @@ export async function getUserById(id: number) {
   return user && camelcaseKeys(user);
 }
 
+// This is joint query
 export async function getUserByValidSessionToken(token: string | undefined) {
   if (!token) return undefined;
   const [user] = await sql<[User | undefined]>`
@@ -153,13 +154,16 @@ export async function deleteExpiredSessions() {
   return sessions.map((session) => camelcaseKeys(session));
 }
 
-export async function getValidSessionByToken(token: string) {
+export async function getValidSessionByToken(token: string | undefined) {
+  if (!token) return undefined;
   const [session] = await sql<[Session | undefined]>`
   SELECT
    *
   FROM
-  sessions
-  Where token = ${token}
+   sessions
+  Where
+   token = ${token} AND
+   expiry_timestamp > now()
   `;
 
   await deleteExpiredSessions();
