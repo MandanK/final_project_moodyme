@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { createCsrfToken } from '../util/auth';
 import { getValidSessionByToken } from '../util/database';
 
 const errorStyle = css`
@@ -15,6 +16,7 @@ type Errors = { message: string }[];
 type Props = {
   refreshUserProfile: () => void;
   userObject: { username: string };
+  csrfToken: string;
 };
 
 export default function Login(props: Props) {
@@ -43,6 +45,7 @@ export default function Login(props: Props) {
             body: JSON.stringify({
               username: username,
               password: password,
+              csrfToken: props.csrfToken,
             }),
           });
 
@@ -137,9 +140,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  // 3. otherwise render the page
-
+  // 3. Otherwise, generate CSRF token and render the page
   return {
-    props: {},
+    props: {
+      csrfToken: createCsrfToken(),
+    },
   };
 }

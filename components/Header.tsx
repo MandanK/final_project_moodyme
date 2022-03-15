@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
+import { User } from '../util/database';
 
 const headerStyles = css`
   background-color: #eee;
@@ -17,7 +18,11 @@ const headerStyles = css`
   }
 `;
 
-export default function Header(props) {
+type Props = {
+  userObject?: User;
+};
+
+export default function Header(props: Props) {
   return (
     <header css={headerStyles}>
       <div>
@@ -37,13 +42,19 @@ export default function Header(props) {
         </Link>
       </div>
       {props.userObject && <div>{props.userObject.username}</div>}
-      <a href="/logout">Logout</a>
-      <Link href="/login">
-        <a data-test-id="products-link">Login</a>
-      </Link>
-      <Link href="/register">
-        <a data-test-id="products-link">Register</a>
-      </Link>
+
+      {props.userObject ? (
+        <a href="/logout">Logout</a>
+      ) : (
+        <>
+          <Link href="/login">
+            <a data-test-id="products-link">Login</a>
+          </Link>
+          <Link href="/register">
+            <a data-test-id="products-link">Register</a>
+          </Link>
+        </>
+      )}
     </header>
   );
 }
