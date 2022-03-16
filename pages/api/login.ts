@@ -24,8 +24,8 @@ export type LoginResponseBody =
   | { user: Pick<User, 'id'> };
 
 export default async function loginHandler(
-  request: NextApiRequest,
-  response: NextApiResponse<LoginResponceBody>,
+  request: LoginNextApiRequest,
+  response: NextApiResponse<LoginResponseBody>,
 ) {
   if (request.method === 'POST') {
     if (

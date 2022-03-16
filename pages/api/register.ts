@@ -16,9 +16,17 @@ type RegisterRequestBody = {
   csrfToken: string;
 };
 
+type RegisterNextApiRequest = Omit<NextApiRequest, 'body'> & {
+  body: RegisterRequestBody;
+};
+
+export type RegisterResponseBody =
+  | { errors: { message: string }[] }
+  | { user: User };
+
 export default async function registerHandler(
-  request: NextApiRequest,
-  response: NextApiResponse,
+  request: RegisterNextApiRequest,
+  response: NextApiResponse<RegisterResponseBody>,
 ) {
   if (request.method === 'POST') {
     if (
@@ -50,6 +58,8 @@ export default async function registerHandler(
       return; // Important: will prevent "Headers already sent" error
     }
 
+    // If there is already a user matching the username,
+    // return error message
     if (await getUserByUsername(request.body.username)) {
       response
         .status(409)

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 import { createCsrfToken } from '../util/auth';
 import { getValidSessionByToken } from '../util/database';
+import { RegisterResponseBody } from './api/register';
 
 const errorStyle = css`
   color: red;
@@ -49,7 +50,8 @@ export default function Register(props: Props) {
             }),
           });
 
-          const registerResponseBody = await registerResponse.json();
+          const registerResponseBody =
+            (await registerResponse.json()) as RegisterResponseBody;
 
           if ('errors' in registerResponseBody) {
             setErrors(registerResponseBody.errors);

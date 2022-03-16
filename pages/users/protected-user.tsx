@@ -1,12 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
-import {
-  getUserById,
-  getUserBySessionToken,
-  getUserByValidSessionToken,
-  getValidSessionByToken,
-} from '../../util/database';
+import { getUserByValidSessionToken } from '../../util/database';
 
 type Props = {
   userObject: { username: string };
@@ -17,8 +12,8 @@ export default function ProtectedUser(props: Props) {
   return (
     <Layout userObject={props.userObject}>
       <Head>
-        <title>About</title>
-        <meta name="description" content="About the application" />
+        <title>Protected User</title>
+        <meta name="description" content="Protected user page" />
       </Head>
 
       <h1>Protected Page</h1>

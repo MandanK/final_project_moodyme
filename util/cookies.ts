@@ -1,6 +1,6 @@
 import { serialize } from 'cookie';
 
-export function createSerializedRegisterSessionTokenCookie(token) {
+export function createSerializedRegisterSessionTokenCookie(token: string) {
   // check if we are in production e.g. Heroku
   const isProduction = process.env.NODE_ENV === 'production';
 
