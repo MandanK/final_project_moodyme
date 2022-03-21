@@ -1,8 +1,8 @@
 const moods = [
-  { name: 'Happy', image: 'Image1.png' },
-  { name: 'Sad', image: 'Image2.png' },
-  { name: 'Angry', image: 'Image3.png' },
-  { name: 'Stressed', image: 'Image4.png' },
+  { name: 'Happy', image: 'image1.png' },
+  { name: 'Sad', image: 'image2.png' },
+  { name: 'Angry', image: 'image3.png' },
+  { name: 'Stressed', image: 'image4.png' },
 ];
 
 exports.up = async (sql) => {

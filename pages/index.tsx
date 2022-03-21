@@ -106,7 +106,7 @@ export default function Home(props: Props) {
         <div css={logoStyle}>
           <Link href="/moods">
             <a>
-              <img src="/images/logo.jpg" width="163" alt="emotional emojis" />
+              <img src="/images/logo.png" width="163" alt="emotional emojis" />
             </a>
           </Link>
         </div>

@@ -20,6 +20,16 @@ const containerStyle = css`
   align-items: center;
 `;
 
+const rowStyle = css`
+  border: none;
+  display: flex;
+`;
+
+const columnStyle = css`
+  border: none;
+  float: left;
+  width: 50%auto;
+`;
 const moodStyle = css`
   border: none;
   padding: 15px;
@@ -38,11 +48,15 @@ export default function Moods(props: Props) {
         <title>Moods</title>
         <meta name="description" content="A list of different moods" />
       </Head>
+
       <div css={containerStyle}>
         <h1>How are you feeling today?</h1>
         {props.moods.map((mood) => {
           return (
-            <div key={`mood-${mood.id}`} css={moodStyle}>
+            <div
+              key={`mood-${mood.id}`}
+              css={mood.id == 1 || 3 ? rowStyle : columnStyle}
+            >
               <Link href={`/moods/${mood.id}`}>
                 <a data-test-id={`mood-${mood.id}`}>
                   <img
@@ -78,41 +92,6 @@ export async function getServerSideProps() {
 
 {
   /*
-<div css={containerStyle}>
-<main css={mainStyle}>
-  <h1 css={titleStyle}>Mood Changer!</h1>
-
-  <p css={descriptionStyle}>How do you feel now?</p>
-
-  <div css={gridStyle}>
-    <a href="https://nextjs.org/docs" css={cardStyle}>
-      <h3>Happy! &rarr;</h3>
-      <p>Find how you can feel even better.</p>
-    </a>
-
-    <a href="https://nextjs.org/learn" css={cardStyle}>
-      <h3>Sad &rarr;</h3>
-      <p>Learn how you can feel better!</p>
-    </a>
-
-    <a
-      href="https://github.com/vercel/next.js/tree/canary/examples"
-      css={cardStyle}
-    >
-      <h3>Angry &rarr;</h3>
-      <p>Learn how you cen feel better.</p>
-    </a>
-
-    <a
-      href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-      css={cardStyle}
-    >
-      <h3>Stressed &rarr;</h3>
-      <p>Learn how you can feel better!</p>
-    </a>
-  </div>
-</main>
-
 <footer css={footerStyle}>
   <a
     href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
