@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Layout from '../../components/Layout';
 import { getMood } from '../../util/database';
+import UserNote from '../user_inputs/[user_inputId]';
 
 export default function SingleMood(props) {
   return (
@@ -16,9 +17,45 @@ export default function SingleMood(props) {
         height="300"
         alt="Mood Emojis"
       />
+      <div>
+        <a href="../user_inputs/1-note">
+          <img
+            src={'/images/' + props.mood.image}
+            width="300"
+            height="300"
+            alt="Mood Emojis"
+            onClick={makeNote}
+          />
+        </a>
+      </div>
+      <div>
+        <a href="../user_inputs/1-note">
+          <img
+            src={'/images/' + props.mood.image}
+            width="300"
+            height="300"
+            alt="Mood Emojis"
+            onClick={makeNote}
+          />
+        </a>
+      </div>
+      <div>
+        <a href="../user_inputs/1-note">
+          <img
+            src={'/images/' + props.mood.image}
+            width="300"
+            height="300"
+            alt="Mood Emojis"
+            onClick={makeNote}
+          />
+        </a>
+      </div>
     </Layout>
   );
 }
+
+const makeNote = () => UserNote;
+
 export async function getServerSideProps(context) {
   const moodId = context.query.moodId;
 

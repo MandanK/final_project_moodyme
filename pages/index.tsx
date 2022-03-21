@@ -1,17 +1,36 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
 
 const containerStyle = css`
-  min-height: 100vh;
-  padding: 0 0.5rem;
   display: flex;
-  flex-direction: column;
+  margin-top: 17%;
+  text-align: center;
   justify-content: center;
-  align-items: center;
 `;
 
+const logoStyle = css`
+  background-color: #3f55b6;
+`;
+
+const h1Style = css`
+  font-size: 18px;
+  color: #e5e5e5;
+  font-weight: bold;
+  line-height: 0.7;
+  padding-top: 52px;
+  margin-left: -10px;
+
+  p {
+    color: #e5e5e5;
+    font-size: 14px;
+  }
+`;
+
+{
+  /*
 const mainStyle = css`
   padding: 5rem 0;
   flex: 1;
@@ -67,6 +86,8 @@ const footerStyle = css`
 const logoStyle = css`
   height: 1em;
 `;
+*/
+}
 
 type Props = {
   refreshUserProfile: () => void;
@@ -78,44 +99,29 @@ export default function Home(props: Props) {
     <Layout userObject={props.userObject}>
       <Head>
         <title>Home</title>
-        <meta name="description" content="You're here to feel better" />
+        <meta name="description" content="We are here for you!" />
       </Head>
 
       <div css={containerStyle}>
-        <main css={mainStyle}>
-          <h1 css={titleStyle}>Mood Changer!</h1>
-
-          <p css={descriptionStyle}>How do you feel now?</p>
-
-          <div css={gridStyle}>
-            <a href="https://nextjs.org/docs" css={cardStyle}>
-              <h3>Happy! &rarr;</h3>
-              <p>Find how you can feel even better.</p>
+        <div css={logoStyle}>
+          <Link href="/moods">
+            <a>
+              <img src="/images/logo.jpg" width="163" alt="emotional emojis" />
             </a>
+          </Link>
+        </div>
+        <h1 css={h1Style}>
+          Moody Me!
+          <br />
+          <p>We are here for you!</p>
+        </h1>
+      </div>
+    </Layout>
+  );
+}
 
-            <a href="https://nextjs.org/learn" css={cardStyle}>
-              <h3>Sad &rarr;</h3>
-              <p>Learn how you can feel better!</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/canary/examples"
-              css={cardStyle}
-            >
-              <h3>Angry &rarr;</h3>
-              <p>Learn how you cen feel better.</p>
-            </a>
-
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              css={cardStyle}
-            >
-              <h3>Stressed &rarr;</h3>
-              <p>Learn how you can feel better!</p>
-            </a>
-          </div>
-        </main>
-
+{
+  /*
         <footer css={footerStyle}>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -125,8 +131,5 @@ export default function Home(props: Props) {
             Powered by{' '}
             <img src="/vercel.svg" alt="Vercel Logo" css={logoStyle} />
           </a>
-        </footer>
-      </div>
-    </Layout>
-  );
+  </footer> */
 }

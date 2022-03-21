@@ -3,11 +3,25 @@ import Link from 'next/link';
 import { User } from '../util/database';
 
 const headerStyles = css`
-  background-color: #eee;
+  background-color: #3f55b6;
   padding: 10px 15px;
   border-radius: 4px;
-  margin: 8px 8px 20px;
+  margin-top: 10px;
   display: flex;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+
+  a {
+    float: right;
+    margin-top: 18px;
+    margin-left: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration-line: none;
+  }
 
   a + a {
     margin-left: 10px;
@@ -18,6 +32,19 @@ const headerStyles = css`
   }
 `;
 
+const userObject = css`
+  float: right;
+  margin-top: 18px;
+  margin-left: 20px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const logoStyle = css`
+  margin-left: 1px;
+  float: left;
+`;
 type Props = {
   userObject?: User;
 };
@@ -26,9 +53,13 @@ export default function Header(props: Props) {
   return (
     <header css={headerStyles}>
       <div>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
+        <img
+          css={logoStyle}
+          src="/images/logo.png"
+          width="63"
+          alt="emotional emojis"
+        />
+
         <Link href="/users/protected-user">
           <a data-test-id="products-link">Protected User</a>
         </Link>
@@ -37,12 +68,16 @@ export default function Header(props: Props) {
             About <span data-test-id="cart-count"></span>
           </a>
         </Link>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
         <Link href="/moods">
           <a data-test-id="products-link">Moods</a>
         </Link>
       </div>
-      {props.userObject && <div>{props.userObject.username}</div>}
-
+      <div css={userObject}>
+        {props.userObject && <div>{props.userObject.username}</div>}{' '}
+      </div>
       {props.userObject ? (
         <a href="/logout">Logout</a>
       ) : (

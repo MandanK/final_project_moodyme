@@ -1,9 +1,17 @@
+import { css } from '@emotion/react';
 import Head from 'next/head';
 import Header from './Header';
 
+const wrapper = css`
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default function Layout(props) {
   return (
-    <>
+    <div css={wrapper}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -11,6 +19,6 @@ export default function Layout(props) {
       <Header userObject={props.userObject} />
 
       <main>{props.children}</main>
-    </>
+    </div>
   );
 }

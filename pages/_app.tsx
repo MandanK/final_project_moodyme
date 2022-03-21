@@ -34,9 +34,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           html,
           body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-              Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-              sans-serif;
+
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.5em;
+
+            background-color: #3f55b6;
           }
 
           main {
