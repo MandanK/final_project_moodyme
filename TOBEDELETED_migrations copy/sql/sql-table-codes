@@ -1,0 +1,28 @@
+  await sql`
+	CREATE TABLE IF NOT EXISTS "moods"(
+    "id" INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name" VARCHAR(255) NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
+    "is_enabled" BOOLEAN NOT NULL
+);
+	`;
+
+
+
+
+
+exports.up = async (sql) => {
+  await sql`
+	CREATE TABLE IF NOT EXISTS "moods"(
+    "id" INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name" VARCHAR(255) NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
+    "is_enabled" BOOLEAN NOT NULL
+);
+	`;
+
+  await sql`
+INSERT INTO moods ${sql(moods, 'name', 'image', 'is_enabled')}
+);
+	`;
+};

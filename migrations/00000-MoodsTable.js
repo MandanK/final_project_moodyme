@@ -1,15 +1,22 @@
+const moods = [
+  { name: 'Happy', image: '/moods/image1.png', is_enabled: 'true' },
+  { name: 'Sad', image: '/moods/image2.png', is_enabled: 'true' },
+  { name: 'Angry', image: '/moods/image3.png', is_enabled: 'true' },
+  { name: 'Stressed', image: '/moods/image4.png', is_enabled: 'true' },
+];
+
 exports.up = async (sql) => {
   await sql`
-	CREATE TABLE moods (
-		id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-		name varchar(40) NOT NULL,
-		image varchar(80) NOT NULL
-	);
+	INSERT INTO moods ${sql(moods, 'image', 'name', 'is_enabled')}
 	`;
 };
 
 exports.down = async (sql) => {
   await sql`
-DROP TABLE moods;
+TRUNCATE moods;
+`;
+
+  await sql`
+ALTER SEQUENCE moods_id_seq RESTART WITH 1
 `;
 };
