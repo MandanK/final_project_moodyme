@@ -23,6 +23,7 @@ type Props = {
 export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [firstname, setFirstName] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
 
@@ -46,6 +47,7 @@ export default function Register(props: Props) {
             body: JSON.stringify({
               username: username,
               password: password,
+              firstname: firstname,
               csrfToken: props.csrfToken,
             }),
           });
@@ -77,6 +79,14 @@ export default function Register(props: Props) {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
+          />
+        </label>
+        <label>
+          First Name:{' '}
+          <input
+            type="firstname"
+            value={firstname}
+            onChange={(event) => setFirstName(event.currentTarget.value)}
           />
         </label>
         <button>Register</button>

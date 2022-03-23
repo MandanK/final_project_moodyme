@@ -1,7 +1,7 @@
 const user_moods = [
   {
-    user_id: '1',
-    user_mood_id: '1',
+    id: 1,
+    mood_id: 1,
     type: 'none',
     text: 'note',
     image: '/images/user_moods/happy.png',
@@ -13,8 +13,8 @@ exports.up = async (sql) => {
   await sql`
 	INSERT INTO user_moods ${sql(
     user_moods,
-    'user_id',
-    'user_mood_id',
+    'id',
+    'mood_id',
     'type',
     'text',
     'image',
@@ -28,6 +28,6 @@ exports.down = async (sql) => {
 	TRUNCATE user_moods;
 	`;
   await sql`
-		ALTER SEQUENCE user_moods_id_seq RESTART WITH 1
+		ALTER SEQUENCE user_moods_user_mood_id_seq RESTART WITH 1
 		`;
 };

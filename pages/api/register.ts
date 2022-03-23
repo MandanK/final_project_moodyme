@@ -13,6 +13,7 @@ import {
 type RegisterRequestBody = {
   username: string;
   password: string;
+  firstname: string;
   csrfToken: string;
 };
 
@@ -32,6 +33,8 @@ export default async function registerHandler(
     if (
       typeof request.body.username !== 'string' ||
       !request.body.username ||
+      typeof request.body.firstname !== 'string' ||
+      !request.body.firstname ||
       typeof request.body.password !== 'string' ||
       !request.body.password ||
       typeof request.body.csrfToken !== 'string' ||
@@ -69,7 +72,11 @@ export default async function registerHandler(
 
     const passwordHash = await bcrypt.hash(request.body.password, 12);
 
-    const user = await createUser(request.body.username, passwordHash);
+    const user = await createUser(
+      request.body.username,
+      passwordHash,
+      request.body.firstname,
+    );
 
     // 1. Create a new token
     const token = crypto.randomBytes(64).toString('base64');

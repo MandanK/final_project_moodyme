@@ -13,31 +13,29 @@ const containerStyle = css`
     #3f55b6 100%
   );
   min-height: 100vh;
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+`;
+
+const h1Style = css`
+  color: #e5e5e5;
+  padding-top: 85px;
 `;
 
 const rowStyle = css`
-  border: none;
-  display: flex;
+  width: 33.33%;
+  padding: 1px;
+  margin-left: 0px;
+  margin-top: 40px;
+  display: inline-block;
 `;
 
-const columnStyle = css`
-  border: none;
-  float: left;
-  width: 50%auto;
-`;
-const moodStyle = css`
-  border: none;
-  padding: 15px;
-  margin-bottom: 20px;
-`;
+//const columnStyle = css`
+//float: left;
+//padding: 5px;
+// `;
 
 type Props = {
-  userObject: { username: string };
+  userObject: { username: string; firstname: string };
   moods: Mood[];
 };
 
@@ -50,18 +48,15 @@ export default function Moods(props: Props) {
       </Head>
 
       <div css={containerStyle}>
-        <h1>How are you feeling today?</h1>
+        <h1 css={h1Style}>How are you feeling now?</h1>
         {props.moods.map((mood) => {
           return (
-            <div
-              key={`mood-${mood.id}`}
-              css={mood.id == 1 || 3 ? rowStyle : columnStyle}
-            >
-              <Link href={`/moods/${mood.id}`}>
-                <a data-test-id={`mood-${mood.id}`}>
+            <div key={`mood-${mood.mood_id}`} css={rowStyle}>
+              <Link href={`/moods/${mood.mood_id}`}>
+                <a data-test-id={`mood-${mood.mood_id}`}>
                   <img
                     src={'/images/' + mood.image}
-                    width="220"
+                    width="250"
                     alt="Mood Emojis"
                   />
                 </a>

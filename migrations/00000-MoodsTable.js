@@ -15,8 +15,7 @@ exports.down = async (sql) => {
   await sql`
 TRUNCATE moods;
 `;
-
   await sql`
-ALTER SEQUENCE moods_id_seq RESTART WITH 1
+ALTER SEQUENCE moods_mood_id_seq RESTART WITH 1
 `;
 };

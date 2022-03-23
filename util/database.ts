@@ -7,7 +7,7 @@ config();
 const sql = postgres();
 
 export type Mood = {
-  id: number;
+  mood_id: number;
   name: string;
   image: string;
 };
@@ -19,9 +19,9 @@ SELECT * FROM moods;
   return moods;
 }
 
-export async function getMood(id: number) {
+export async function getMood(mood_id: number) {
   const [mood] = await sql<[Mood | undefined]>`
-  SELECT * FROM moods WHERE id = ${id}
+  SELECT * FROM moods WHERE mood_id = ${mood_id}
   `;
   return mood && camelcaseKeys(mood);
 }
@@ -38,6 +38,7 @@ export async function getMood(id: number) {
 export type User = {
   id: Number;
   username: String;
+  firstname: String;
 };
 
 export type UserWithPasswordHash = User & {
@@ -48,7 +49,8 @@ export async function getUserById(id: number) {
   const [user] = await sql<[User | undefined]>`
   SELECT
   id,
-  username
+  username,
+  firstname
   FROM
     users
   WHERE
@@ -63,7 +65,8 @@ export async function getUserByValidSessionToken(token: string | undefined) {
   const [user] = await sql<[User | undefined]>`
     SELECT
       users.id,
-      users.username
+      users.username,
+      users.firstname
     FROM
       users,
       sessions
@@ -87,7 +90,8 @@ export async function getUserWithPasswordHashByUsername(username: string) {
   SELECT
   id,
   username,
-  password_hash
+  password_hash,
+  firstname
   FROM
     users
   WHERE
@@ -96,15 +100,20 @@ export async function getUserWithPasswordHashByUsername(username: string) {
   return user && camelcaseKeys(user);
 }
 
-export async function createUser(username: string, passwordHash: string) {
+export async function createUser(
+  username: string,
+  passwordHash: string,
+  firstname: string,
+) {
   const [user] = await sql<[User]>`
   INSERT INTO users
-  (username, password_hash)
+  (username, password_hash, firstname)
   VALUES
-  (${username}, ${passwordHash})
+  (${username}, ${passwordHash}, ${firstname})
   RETURNING
   id,
-  username
+  username,
+  firstname
     `;
   return camelcaseKeys(user);
 }

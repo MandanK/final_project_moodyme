@@ -1,0 +1,67 @@
+CREATE TABLE "moods"(
+    "mood_id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
+    "is_enabled" BOOLEAN NULL
+);
+
+CREATE TABLE "suggestions"(
+    "suggestion_id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
+    "mood_id" INTEGER NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
+    "description" VARCHAR(255) NULL,
+    "type" VARCHAR(255) NOT NULL,
+    "is_enabled" BOOLEAN NULL,
+    "quarter" INTEGER NULL
+);
+CREATE TABLE "users"(
+    "id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
+    "username" VARCHAR(255) NOT NULL,
+    "password_hash" VARCHAR(255) NOT NULL,
+    "role" INTEGER NULL,
+    "firstname" VARCHAR(255) NULL,
+    "lastname" VARCHAR(255) NULL,
+    "birthday" DATE NULL,
+    "email" VARCHAR(255) NULL,
+    "tel" VARCHAR(255) NULL,
+    "address" VARCHAR(255) NULL,
+    "social_network" VARCHAR(255) NULL,
+    "gender" VARCHAR(255) NULL,
+    "image" VARCHAR(255) NULL,
+    "last_login" DATE NULL,
+    "register_date" DATE NULL,
+    "is_enabled" BOOLEAN NULL
+);
+
+CREATE TABLE "user_moods"(
+    "user_mood_id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
+    "id" INTEGER NOT NULL,
+    "mood_id" INTEGER NOT NULL,
+    "type" VARCHAR(255) NOT NULL,
+    "text" VARCHAR(255) NULL,
+    "image" VARCHAR(255) NULL,
+    "created_at" DATE NOT NULL,
+    "updated_at" DATE NULL,
+    "response_text" VARCHAR(255) NULL,
+    "response_image" VARCHAR(255) NULL
+);
+
+
+
+
+NOOOOOOOOT FROM HEEEEREEEEEE!!!
+
+
+
+
+
+
+
+
+ALTER TABLE
+    "user_moods" ADD CONSTRAINT "user_moods_mood_id_foreign" FOREIGN KEY("mood_id") REFERENCES "moods"("mood_id");
+ALTER TABLE
+    "suggestions" ADD CONSTRAINT "suggestions_mood_id_foreign" FOREIGN KEY("mood_id") REFERENCES "moods"("mood_id");
+ALTER TABLE
+    "user_moods" ADD CONSTRAINT "user_moods_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("user_id");

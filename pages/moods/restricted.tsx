@@ -43,9 +43,11 @@ export default function MoodsRestricted(props: Props) {
       <h1>Moods</h1>
       {props.moods.map((mood) => {
         return (
-          <div key={`mood-${mood.id}`} css={moodStyles}>
+          <div key={`mood-${mood.mood_id}`} css={moodStyles}>
             {/* Dynamic link, eg. /moods/1, /moods/2, etc */}
-            <Link href={`/mood-management-naive-dont-copy/read/${mood.id}`}>
+            <Link
+              href={`/mood-management-naive-dont-copy/read/${mood.mood_id}`}
+            >
               <a>{mood.name}</a>
             </Link>{' '}
           </div>

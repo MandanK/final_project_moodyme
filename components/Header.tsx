@@ -4,6 +4,7 @@ import { User } from '../util/database';
 
 const headerStyles = css`
   background-color: #3f55b6;
+  height: 45px;
   padding: 10px 15px;
   border-radius: 4px;
   margin-top: 10px;
@@ -76,7 +77,7 @@ export default function Header(props: Props) {
         </Link>
       </div>
       <div css={userObject}>
-        {props.userObject && <div>{props.userObject.username}</div>}{' '}
+        {props.userObject && <div>{props.userObject.firstname}</div>}{' '}
       </div>
       {props.userObject ? (
         <a href="/logout">Logout</a>
