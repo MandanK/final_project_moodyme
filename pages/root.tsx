@@ -1,50 +1,14 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { css } from '@emotion/react';
-import Head from 'next/head';
-import Link from 'next/link';
 import Layout from '../components/Layout';
-import { getMoods } from '../util/database';
 import { createCsrfToken } from '../util/auth';
 import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../util/database';
-
-const containerStyle = css`
-  background-color: #3f55b6;
-  // padding: 0 100px;
-  min-height: 100vh;
-  text-align: center;
-`;
-
-const h1Style = css`
-  color: #e5e5e5;
-  padding-top: 85px;
-`;
-
-const rowStyle = css`
-  width: 44.33%;
-  //padding: 1px;
-  margin-left: 0px;
-  //margin-top: 40px;
-  display: inline-block;
-`;
-
-//const columnStyle = css`
-//float: left;
-//padding: 5px;
-// `;
-
-type Props = {
-  userObject: { username: string; firstname: string };
-  moods: Mood[];
-  refreshUserProfile: () => void;
-  authorized: Boolean;
-  user: { id: number; username: string };
-  csrfToken: string;
-};
 
 const errorStyle = css`
   color: red;
@@ -52,7 +16,15 @@ const errorStyle = css`
 
 type Errors = { message: string }[];
 
-export default function Home(props: Props) {
+type Props = {
+  refreshUserProfile: () => void;
+  authorized: Boolean;
+  userObject: { username: string };
+  user: { id: number; username: string };
+  csrfToken: string;
+};
+
+export default function Root(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
@@ -60,31 +32,16 @@ export default function Home(props: Props) {
   return (
     <Layout userObject={props.userObject}>
       <Head>
-        <title>MoodyMe!</title>
-        <meta name="description" content="Track/Change Your Mood!" />
+        <title>MoodyMe</title>
+        <meta name="description" content="We are here for you!" />
       </Head>
+
       {props.authorized ? (
-        <div css={containerStyle}>
-          {props.moods.map((mood) => {
-            return (
-              <div key={`mood-${mood.mood_id}`} css={rowStyle}>
-                <Link href={`#Lorem_Ipsum`}>
-                  <a data-test-id={`mood-${mood.mood_id}`}>
-                    <img
-                      src={'/images/' + mood.image}
-                      width="170"
-                      alt="Mood Emojis"
-                      //width="100%"
-                      //height="100%"
-                      //layout="responsive"
-                      //objectFit="cover"
-                    />
-                  </a>
-                </Link>
-              </div>
-            );
-          })}
-          <h2 id="Lorem_Ipsum">Lorem Ipsum</h2>
+        <div>
+          <h1>Already loged in</h1>
+          <p>You are able to see this page, only if you are logged in</p>
+          <div> user id is {props.user.id}</div>
+          <div>user name is {props.user.username}</div>
         </div>
       ) : (
         <div>
@@ -171,18 +128,7 @@ export default function Home(props: Props) {
   );
 }
 
-// Code in getServerSideProps runs only in
-// Node.js, and allows you to do fancy things:
-// - Read files from the file system
-// - Connect to a (real) database
-//
-// getServerSideProps is exported from your files
-// (ONLY FILES IN /pages) and gets imported
-// by Next.js
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const moods = await getMoods();
-
   // ! Redirect from HTTP to HTTPS on Heroku
   if (
     context.req.headers.host &&
@@ -207,7 +153,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const session = await getValidSessionByToken(token);
     if (user) {
       return {
-        props: { moods: moods, user: user, authorized: true },
+        props: { user: user, authorized: true },
       };
     }
 
@@ -226,21 +172,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       csrfToken: createCsrfToken(),
     },
   };
-}
-
-{
-  /*
-<footer css={footerStyle}>
-  <a
-    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Powered by{' '}
-    <img src="/vercel.svg" alt="Vercel Logo" css={logoStyle} />
-  </a>
-</footer>
-</div>
-</Layout>
-*/
 }

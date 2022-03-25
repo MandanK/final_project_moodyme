@@ -5,10 +5,9 @@ import { User } from '../util/database';
 const headerStyles = css`
   background-color: #3f55b6;
   height: 45px;
-  padding: 10px 15px;
+  padding: 5px 5px 65px 5px;
   // padding: 0 100px;
   border-radius: 4px;
-  margin-top: 10px;
   display: flex;
   position: -webkit-sticky;
   position: sticky;
@@ -16,8 +15,8 @@ const headerStyles = css`
 
   a {
     float: right;
-    margin-top: 18px;
-    margin-left: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -36,7 +35,6 @@ const headerStyles = css`
 
 const userObject = css`
   float: right;
-  margin-top: 18px;
   margin-left: 20px;
   color: white;
   font-size: 18px;
@@ -55,27 +53,14 @@ export default function Header(props: Props) {
   return (
     <header css={headerStyles}>
       <div>
-        <img
-          css={logoStyle}
-          src="/images/logo.png"
-          width="63"
-          alt="emotional emojis"
-        />
-
-        <Link href="/users/protected-user">
-          <a data-test-id="products-link">Protected User</a>
-        </Link>
-        <Link href="/about">
-          <a data-test-id="cart-link">
-            About <span data-test-id="cart-count"></span>
-          </a>
-        </Link>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-        <Link href="/moods">
-          <a data-test-id="products-link">Moods</a>
-        </Link>
+        <a href="/">
+          <img
+            css={logoStyle}
+            src="/images/logo.png"
+            width="70"
+            alt="emotional emojis"
+          />
+        </a>
       </div>
       <div css={userObject}>
         {props.userObject && <div>{props.userObject.firstname}</div>}{' '}

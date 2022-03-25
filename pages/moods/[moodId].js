@@ -11,18 +11,6 @@ export default function SingleMood(props) {
         <meta description={`${props.mood.name} mood`} />
       </Head>
       <h1>{props.mood.name}</h1>
-
-      <div>
-        <a href="../user_inputs/1-note">
-          <img
-            src={'/images/' + props.mood.image}
-            width="300"
-            height="300"
-            alt="Mood Emojis"
-            onClick={makeNote}
-          />
-        </a>
-      </div>
       <div>
         <a href="../user_inputs/1-note">
           <img
@@ -43,6 +31,8 @@ const makeNote = () => UserNote;
 export async function getServerSideProps(context) {
   const moodId = context.query.moodId;
 
+  // suggestions.mood_id === props.mood.mood_id
+
   //const moodDatabase = await getMoods(); We need this line for the database
 
   const mood = await getMood(moodId);
@@ -50,6 +40,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       mood: mood,
+      // !!! suggestions: suggestions,
     },
   };
 }

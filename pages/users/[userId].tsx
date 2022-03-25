@@ -6,7 +6,6 @@ import { getUserById, User } from '../../util/database';
 type Props = {
   user?: User;
   userObject: { username: string };
-
 };
 
 export default function UserDetail(props: Props) {

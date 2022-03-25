@@ -12,6 +12,10 @@ export type Mood = {
   image: string;
 };
 
+export type Suggestions = {
+  /// attributes...
+};
+
 export async function getMoods() {
   const moods = await sql<Mood[]>`
 SELECT * FROM moods;
@@ -57,6 +61,20 @@ export async function getUserById(id: number) {
    id = ${id}
   `;
   return user && camelcaseKeys(user);
+}
+
+export async function getSuggestionsByMoodId(mood_id: number) {
+  const [suggestions] = await sql<[Suggestions | undefined]>`
+  SELECT
+  id,
+  username,
+  firstname
+  FROM
+    suggestions
+  WHERE
+   mood_id = ${mood_id}
+  `;
+  return suggestions && camelcaseKeys(suggestions);
 }
 
 // This is joint query
