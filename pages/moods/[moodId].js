@@ -11,23 +11,7 @@ export default function SingleMood(props) {
         <meta description={`${props.mood.name} mood`} />
       </Head>
       <h1>{props.mood.name}</h1>
-      <img
-        src={'/images/' + props.mood.image}
-        width="300"
-        height="300"
-        alt="Mood Emojis"
-      />
-      <div>
-        <a href="../user_inputs/1-note">
-          <img
-            src={'/images/' + props.mood.image}
-            width="300"
-            height="300"
-            alt="Mood Emojis"
-            onClick={makeNote}
-          />
-        </a>
-      </div>
+
       <div>
         <a href="../user_inputs/1-note">
           <img

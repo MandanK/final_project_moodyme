@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         styles={css`
           html,
           body {
-            margin: 0;
+            margin: 0%;
 
             box-sizing: border-box;
             font-family: sans-serif;
@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
 
           main {
-            margin: 0 8px;
+            margin: 0 0.5em;
           }
         `}
       />

@@ -6,6 +6,7 @@ const headerStyles = css`
   background-color: #3f55b6;
   height: 45px;
   padding: 10px 15px;
+  // padding: 0 100px;
   border-radius: 4px;
   margin-top: 10px;
   display: flex;

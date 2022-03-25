@@ -5,6 +5,7 @@ import Header from './Header';
 const wrapper = css`
   min-height: 100vh;
   padding: 0 0.5rem;
+  //padding: 0 -20%;
   justify-content: center;
   align-items: center;
 `;

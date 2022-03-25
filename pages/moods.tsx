@@ -12,6 +12,7 @@ const containerStyle = css`
     #3f55b6 50%,
     #3f55b6 100%
   );
+  // padding: 0 100px;
   min-height: 100vh;
   text-align: center;
 `;
@@ -58,6 +59,10 @@ export default function Moods(props: Props) {
                     src={'/images/' + mood.image}
                     width="250"
                     alt="Mood Emojis"
+                    //width="100%"
+                    //height="100%"
+                    //layout="responsive"
+                    //objectFit="cover"
                   />
                 </a>
               </Link>
