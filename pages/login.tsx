@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { createCsrfToken } from '../util/auth';
-import { getValidSessionByToken } from '../util/database';
+import { createCsrfToken } from '../utils/auth';
+import { getValidSessionByToken } from '../utils/database';
 
 const errorStyle = css`
   color: red;

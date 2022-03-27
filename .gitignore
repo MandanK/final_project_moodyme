@@ -34,3 +34,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+  ./pages/form_style.css
+  ./pages/reference-code.js

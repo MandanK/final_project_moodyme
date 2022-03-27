@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
-import { User } from '../util/database';
+import { User } from '../utils/database';
 
 const headerStyles = css`
-  background-color: #3f55b6;
   height: 45px;
   padding: 5px 5px 65px 5px;
   // padding: 0 100px;
@@ -34,8 +33,10 @@ const headerStyles = css`
 `;
 
 const userObject = css`
+  margin-top: 5px;
   float: right;
   margin-left: 20px;
+  margin-right: 5px;
   color: white;
   font-size: 18px;
   font-weight: bold;
@@ -63,7 +64,7 @@ export default function Header(props: Props) {
         </a>
       </div>
       <div css={userObject}>
-        {props.userObject && <div>{props.userObject.firstname}</div>}{' '}
+        {props.userObject && <div>{props.userObject.firstname}</div>}
       </div>
       {props.userObject ? (
         <a href="/logout">Logout</a>

@@ -7,7 +7,7 @@ const wrapper = css`
   margin: auto;
   border-style: dashed;
   border-width: 2px;
-  width: 390px;
+  width: 414px; //iphone 11 is 414px
   min-height: 100vh;
   padding: 0 0rem;
   //padding: 0 -20%;

@@ -1,6 +1,6 @@
 import { serialize } from 'cookie';
 import { GetServerSidePropsContext } from 'next';
-import { deleteSessionByToken } from '../util/database';
+import { deleteSessionByToken } from '../utils/database';
 
 export default function Logout() {
   return null;

@@ -1,13 +1,13 @@
 import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { verifyCsrfToken } from '../../util/auth';
-import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
+import { verifyCsrfToken } from '../../utils/auth';
+import { createSerializedRegisterSessionTokenCookie } from '../../utils/cookies';
 import {
   createSession,
   getUserWithPasswordHashByUsername,
   User,
-} from '../../util/database';
+} from '../../utils/database';
 
 type LoginRequestBody = {
   username: string;

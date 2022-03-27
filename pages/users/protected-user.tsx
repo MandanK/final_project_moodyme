@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
-import { getUserByValidSessionToken } from '../../util/database';
+import { getUserByValidSessionToken } from '../../utils/database';
 
 type Props = {
   userObject: { username: string };

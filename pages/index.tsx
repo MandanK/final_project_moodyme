@@ -5,15 +5,20 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { getMoods } from '../util/database';
-import { createCsrfToken } from '../util/auth';
+import { getMoods, getSuggestions } from '../utils/database';
+import { Mood, Suggestion, createUserMood } from '../utils/database';
+import { createCsrfToken } from '../utils/auth';
+import { UserMoodResponseBody } from './api/user_mood';
 import {
   getUserByValidSessionToken,
   getValidSessionByToken,
-} from '../util/database';
+} from '../utils/database';
+import styled from 'styled-components';
+import hello from './api/hello';
+
+const styles = {};
 
 const containerStyle = css`
-  background-color: #3f55b6;
   // padding: 0 100px;
   min-height: 100vh;
   text-align: center;
@@ -32,6 +37,14 @@ const rowStyle = css`
   display: inline-block;
 `;
 
+const rowStyleSuggestions = css`
+  width: 30.33%;
+  //padding: 1px;
+  margin-left: 0px;
+  //margin-top: 40px;
+  display: inline-block;
+`;
+
 //const columnStyle = css`
 //float: left;
 //padding: 5px;
@@ -44,6 +57,7 @@ type Props = {
   authorized: Boolean;
   user: { id: number; username: string };
   csrfToken: string;
+  suggestions: Suggestion[];
 };
 
 const errorStyle = css`
@@ -52,7 +66,29 @@ const errorStyle = css`
 
 type Errors = { message: string }[];
 
+let moodClicked = false;
+let currentClickedMood = 0;
+
+//let currentSuggestions: Suggestion[];
+
+async function moodImageClick(mood_id: number) {
+  // change the background color base on moods
+  console.log(mood_id);
+  if (mood_id === 1) {
+    document.body.style.backgroundColor = 'green';
+  } else if (mood_id === 2) {
+    document.body.style.backgroundColor = 'grey';
+  } else if (mood_id === 3) {
+    document.body.style.backgroundColor = 'red';
+  } else {
+    document.body.style.backgroundColor = 'violet';
+  }
+  moodClicked = true;
+  currentClickedMood = mood_id;
+}
+
 export default function Home(props: Props) {
+  const [note, setNote] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
@@ -68,7 +104,7 @@ export default function Home(props: Props) {
           {props.moods.map((mood) => {
             return (
               <div key={`mood-${mood.mood_id}`} css={rowStyle}>
-                <Link href={`#Lorem_Ipsum`}>
+                <Link href={`#take-a-note`}>
                   <a data-test-id={`mood-${mood.mood_id}`}>
                     <img
                       src={'/images/' + mood.image}
@@ -78,13 +114,91 @@ export default function Home(props: Props) {
                       //height="100%"
                       //layout="responsive"
                       //objectFit="cover"
+                      onClick={() => {
+                        moodImageClick(mood.mood_id);
+                      }}
                     />
                   </a>
                 </Link>
               </div>
             );
           })}
-          <h2 id="Lorem_Ipsum">Lorem Ipsum</h2>
+          <div id="take-a-note" className="form__group field">
+            <form
+              onSubmit={async (event) => {
+                event.preventDefault();
+
+                const registerResponse = await fetch('/api/user_mood', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    id: props.user.id,
+                    mood_id: currentClickedMood,
+                    type: 'note',
+                    text: note, // the note that the user takes
+                    image: 'image', //if the user's taken photo should be added to the database, this field can be used
+                    created_at: Date,
+                    csrfToken: props.csrfToken,
+                  }),
+                });
+
+                const registerResponseBody =
+                  (await registerResponse.json()) as UserMoodResponseBody;
+
+                if ('errors' in registerResponseBody) {
+                  setErrors(registerResponseBody.errors);
+                  return;
+                }
+
+                // When the user is registered we want to send her to home page or any page you want.
+
+                props.refreshUserProfile();
+                await router.push('/'); // Here I am telling to take the user to the home page.
+              }}
+            >
+              <label>
+                note:{' '}
+                <input
+                  value={note}
+                  onChange={(event) => setUsername(event.currentTarget.value)}
+                />
+              </label>
+
+              <button>save</button>
+            </form>
+          </div>
+
+          {props.suggestions.map((suggestion) => {
+            let isShown = false;
+            if (suggestion.mood_id == currentClickedMood) {
+              isShown = true;
+            }
+            return (
+              <div
+                className="suggestion"
+                key={`suggestion-${suggestion.mood_id}`}
+                css={rowStyleSuggestions}
+                style={{ display: isShown ? 'inline-block' : 'none' }}
+              >
+                <Link href={`#take-a-note`}>
+                  <a data-test-id={`suggestion-${suggestion.mood_id}`}>
+                    <img
+                      src={suggestion.image}
+                      width="170"
+                      alt="Mood Emojis"
+                      //width="100%"
+                      //height="100%"
+                      //layout="responsive"
+                      //objectFit="cover"
+                      onClick={() => moodImageClick(suggestion.mood_id)}
+                    />
+                  </a>
+                </Link>
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div>
@@ -181,8 +295,8 @@ export default function Home(props: Props) {
 // by Next.js
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const suggestions = await getSuggestions();
   const moods = await getMoods();
-
   // ! Redirect from HTTP to HTTPS on Heroku
   if (
     context.req.headers.host &&
@@ -207,7 +321,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const session = await getValidSessionByToken(token);
     if (user) {
       return {
-        props: { moods: moods, user: user, authorized: true },
+        props: {
+          moods: moods,
+          user: user,
+          suggestions: suggestions,
+          authorized: true,
+        },
       };
     }
 

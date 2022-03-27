@@ -12,8 +12,24 @@ export type Mood = {
   image: string;
 };
 
-export type Suggestions = {
-  /// attributes...
+export type UserMood = {
+  id: int;
+  mood_id: int;
+  type: string;
+  text: string;
+  image: string;
+  created_at: Date;
+};
+
+export type Suggestion = {
+  suggestion_id: number;
+  mood_id: number;
+  name: string;
+  image: string;
+  image_extra: string;
+  description: string;
+  type: string;
+  is_enabled: Boolean;
 };
 
 export async function getMoods() {
@@ -21,6 +37,13 @@ export async function getMoods() {
 SELECT * FROM moods;
 `;
   return moods;
+}
+
+export async function getSuggestions() {
+  const suggestions = await sql<Suggestion[]>`
+SELECT * FROM suggestions;
+`;
+  return suggestions;
 }
 
 export async function getMood(mood_id: number) {
@@ -40,9 +63,9 @@ export async function getMood(mood_id: number) {
 //export default moods;
 
 export type User = {
-  id: Number;
-  username: String;
-  firstname: String;
+  id: number;
+  username: string;
+  firstname: string;
 };
 
 export type UserWithPasswordHash = User & {
@@ -64,17 +87,15 @@ export async function getUserById(id: number) {
 }
 
 export async function getSuggestionsByMoodId(mood_id: number) {
-  const [suggestions] = await sql<[Suggestions | undefined]>`
+  const suggestions = await sql<Suggestion[]>`
   SELECT
-  id,
-  username,
-  firstname
+  *
   FROM
     suggestions
   WHERE
    mood_id = ${mood_id}
   `;
-  return suggestions && camelcaseKeys(suggestions);
+  return suggestions; //&& camelcaseKeys(suggestions);
 }
 
 // This is joint query
@@ -116,6 +137,36 @@ export async function getUserWithPasswordHashByUsername(username: string) {
    username = ${username}
   `;
   return user && camelcaseKeys(user);
+}
+
+export async function createUserMood(
+  id: number, // id is the user id
+  mood_id: number,
+  type: string,
+  text: string,
+  image: string,
+  created_at: Date,
+) {
+  const [user_mood] = await sql<[UserMood]>`
+  INSERT INTO user_moods
+  (
+    id,
+    mood_id,
+    type,
+    text,
+    image,
+    created_at)
+  VALUES
+  (${id}, ${mood_id}, ${type}, ${text}, ${image}, ${created_at})
+  RETURNING
+  id,
+  mood_id,
+  type,
+  text,
+  image,
+  created_at
+    `;
+  return user_mood; //camelcaseKeys(user_mood);
 }
 
 export async function createUser(

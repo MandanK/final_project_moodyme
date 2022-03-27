@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
-import { getUserById, User } from '../../util/database';
+import { getUserById, User } from '../../utils/database';
 
 type Props = {
   user?: User;

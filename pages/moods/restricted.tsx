@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
-import { getMoods, getValidSessionByToken, Mood } from '../../util/database';
+import { getMoods, getValidSessionByToken, Mood } from '../../utils/database';
 
 const moodStyles = css`
   border-radius: 5px;

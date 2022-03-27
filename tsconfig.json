@@ -22,7 +22,7 @@
     "**/*.tsx",
     "pages/moods.js",
     "pages/moods.js",
-    "util/database.ts",
+    "utils/database.ts",
     "pages/_app.tsx"
   ],
   "exclude": ["node_modules"]
