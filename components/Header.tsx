@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { User } from '../utils/database';
 
 const headerStyles = css`
-  height: 45px;
+  height: 0px;
   padding: 5px 5px 65px 5px;
   // padding: 0 100px;
   border-radius: 4px;
@@ -11,17 +11,6 @@ const headerStyles = css`
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-
-  a {
-    float: right;
-    margin-top: 5px;
-    margin-left: 5px;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration-line: none;
-  }
 
   a + a {
     margin-left: 10px;
@@ -37,13 +26,24 @@ const userObject = css`
   float: right;
   margin-left: 20px;
   margin-right: 5px;
-  color: white;
-  font-size: 18px;
+  margin-top: 19px;
+  margin-right: 11px;
   font-weight: bold;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration-line: none;
+`;
+const linkStyle = css`
+  font-weight: bold;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
 `;
 
 const logoStyle = css`
-  margin-left: 1px;
+  margin-left: 7px;
+  margin-top: 7px;
   float: left;
 `;
 type Props = {
@@ -58,26 +58,30 @@ export default function Header(props: Props) {
           <img
             css={logoStyle}
             src="/images/logo.png"
-            width="70"
+            width="60"
             alt="emotional emojis"
           />
         </a>
       </div>
       <div css={userObject}>
-        {props.userObject && <div>{props.userObject.firstname}</div>}
+        <div>{props.userObject && <div>{props.userObject.firstname}</div>}</div>
+        {props.userObject ? (
+          <a href="/logout">Logout</a>
+        ) : (
+          <>
+            <Link href="/login">
+              <a css={linkStyle} data-test-id="products-link">
+                Login
+              </a>
+            </Link>
+            <Link href="/register">
+              <a css={linkStyle} data-test-id="products-link">
+                Register
+              </a>
+            </Link>
+          </>
+        )}
       </div>
-      {props.userObject ? (
-        <a href="/logout">Logout</a>
-      ) : (
-        <>
-          <Link href="/login">
-            <a data-test-id="products-link">Login</a>
-          </Link>
-          <Link href="/register">
-            <a data-test-id="products-link">Register</a>
-          </Link>
-        </>
-      )}
     </header>
   );
 }
