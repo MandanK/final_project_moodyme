@@ -18,7 +18,7 @@ type UserMoodRequestBody = {
   text: string;
   image: string;
   created_at: Date;
-  csrfToken: string; //delete if not needed
+  csrfToken: string;
 };
 
 type UserMoodNextApiRequest = Omit<NextApiRequest, 'body'> & {
@@ -35,13 +35,13 @@ export default async function userMoodHandler(
 ) {
   if (request.method === 'POST') {
     if (
-      typeof request.body.id !== 'number' ||
+      //typeof request.body.id !== 'number' ||
       !request.body.id ||
-      typeof request.body.mood_id !== 'number' ||
+      //typeof request.body.mood_id !== 'number' ||
       !request.body.mood_id ||
-      typeof request.body.created_at !== 'object' ||
-      !request.body.created_at ||
-      typeof request.body.csrfToken !== 'string' ||
+      //typeof request.body.created_at !== 'object' ||
+      // !request.body.created_at //||
+      //typeof request.body.csrfToken !== 'string' ||
       !request.body.csrfToken
     ) {
       response.status(400).json({

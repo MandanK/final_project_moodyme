@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Layout from '../../components/Layout';
-import { getMood } from '../../util/database';
+import { getMood } from '../../utils/database';
 import UserNote from '../user_inputs/[user_inputId]';
 
 export default function SingleMood(props) {

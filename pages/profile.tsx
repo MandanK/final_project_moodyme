@@ -1,4 +1,7 @@
+import CalendarPersonalize from 'react-calendar-personalize-color';
+
 import { GetServerSidePropsContext } from 'next';
+import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { css } from '@emotion/react';
@@ -9,6 +12,8 @@ import { getMoods, getSuggestions } from '../utils/database';
 import { Mood, Suggestion, createUserMood } from '../utils/database';
 import { createCsrfToken } from '../utils/auth';
 import { UserMoodResponseBody } from './api/user_mood';
+import Calendar from 'react-calendar';
+
 import {
   getUserByValidSessionToken,
   getValidSessionByToken,
@@ -17,6 +22,11 @@ import styled from 'styled-components';
 import hello from './api/hello';
 
 const styles = {};
+
+const highlight = css`
+  // padding: 0 100px;
+  color: red;
+`;
 
 const containerStyle = css`
   // padding: 0 100px;
@@ -87,7 +97,13 @@ async function moodImageClick(mood_id: number) {
   currentClickedMood = mood_id;
 }
 
+//const mark = ['04-03-2020', '03-03-2020', '05-03-2020'];
+
 export default function Home(props: Props) {
+  const [checkDate, setCheckDate] = React.useState(null);
+
+  const [value, onChange] = useState(new Date());
+  const mark = ['04-03-2020', '03-03-2020', '05-03-2020'];
   const [note, setNote] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -101,108 +117,18 @@ export default function Home(props: Props) {
       </Head>
       {props.authorized ? (
         <div css={containerStyle}>
-          {props.moods.map((mood) => {
-            return (
-              <div key={`mood-${mood.mood_id}`} css={rowStyle}>
-                <Link href={`#take-a-note`}>
-                  <a data-test-id={`mood-${mood.mood_id}`}>
-                    <img
-                      src={'/images/' + mood.image}
-                      width="170"
-                      alt="Mood Emojis"
-                      //width="100%"
-                      //height="100%"
-                      //layout="responsive"
-                      //objectFit="cover"
-                      onClick={() => {
-                        moodImageClick(mood.mood_id);
-                      }}
-                    />
-                  </a>
-                </Link>
-              </div>
-            );
-          })}
-          <div id="take-a-note" className="form__group field">
-            <form
-              onSubmit={async (event) => {
-                event.preventDefault();
-
-                // console.log(props.csrfToken); for debugging purposes
-
-                const registerResponse = await fetch('/api/user_mood', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    id: props.user.id,
-                    mood_id: currentClickedMood,
-                    type: 'note',
-                    text: note, // the note that the user takes
-                    image: 'image', //if the user's taken photo should be added to the database, this field can be used
-                    created_at: new Date(Date.now()),
-                    csrfToken: props.csrfToken,
-                  }),
-                });
-
-                const registerResponseBody =
-                  (await registerResponse.json()) as UserMoodResponseBody;
-
-                if ('errors' in registerResponseBody) {
-                  setErrors(registerResponseBody.errors);
-                  return;
-                }
-
-                // When the user is registered we want to send her to home page or any page you want.
-
-                props.refreshUserProfile();
-                await router.push('/'); // Here I am telling to take the user to the home page.
-
-                setNote('');
-              }}
-            >
-              <label>
-                note:{' '}
-                <input
-                  value={note}
-                  onChange={(event) => setNote(event.currentTarget.value)}
-                />
-              </label>
-
-              <button>save</button>
-            </form>
+          <div>
+            <Calendar
+              css={highlight}
+              onChange={onChange}
+              //value={state.date}
+              tileClassName="highlight"
+              tileDisabled={({ date }) => date.getDay() === 0}
+              /*maxDate={new Date(2020, 1, 0)}</div>*/
+              minDate={new Date()}
+            ></Calendar>
           </div>
-
-          {props.suggestions.map((suggestion) => {
-            let isShown = false;
-            if (suggestion.mood_id == currentClickedMood) {
-              isShown = true;
-            }
-            return (
-              <div
-                className="suggestion"
-                key={`suggestion-${suggestion.suggestion_id}`}
-                css={rowStyleSuggestions}
-                style={{ display: isShown ? 'inline-block' : 'none' }}
-              >
-                <Link href={`#take-a-note`}>
-                  <a data-test-id={`suggestion-${suggestion.suggestion_id}`}>
-                    <img
-                      src={suggestion.image}
-                      width="170"
-                      alt="Mood Emojis"
-                      //width="100%"
-                      //height="100%"
-                      //layout="responsive"
-                      //objectFit="cover"
-                      onClick={() => moodImageClick(suggestion.mood_id)}
-                    />
-                  </a>
-                </Link>
-              </div>
-            );
-          })}
+          );
         </div>
       ) : (
         <div>
