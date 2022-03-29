@@ -8,11 +8,12 @@ CREATE TABLE "moods"(
 CREATE TABLE "suggestions"(
     "suggestion_id" INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
     "mood_id" INTEGER NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(512) NOT NULL,
     "image_extra" VARCHAR(255) NULL,
     "image" VARCHAR(255) NOT NULL,
-    "description" VARCHAR(255) NULL,
+    "description" VARCHAR(2048) NULL,
     "type" VARCHAR(255) NOT NULL,
+    "link" VARCHAR(512) NULL,
     "is_enabled" BOOLEAN NULL,
     "quarter" INTEGER NULL
 );

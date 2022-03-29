@@ -54,8 +54,8 @@ const buttonStyle = css`
   background-color: #deb1ae;
   width: 320px;
   border-radius: 20px;
-  height: 35px;
-  margin-top: 18px;
+  height: 40px;
+  margin-top: 25px;
   margin-left: 50px;
   padding: 10px;
   font-family: sans-serif;
@@ -132,7 +132,7 @@ export default function Register(props: Props) {
       >
         <div css={labelStyle}>
           <label>
-            Name*{' '}
+            Name{' '}
             <input
               css={inputStyle}
               type="firstname"
@@ -141,7 +141,7 @@ export default function Register(props: Props) {
             />
           </label>
           <label>
-            Email*{' '}
+            Email{' '}
             <input
               css={inputStyle}
               value={username}
@@ -149,7 +149,7 @@ export default function Register(props: Props) {
             />
           </label>
           <label>
-            Password*{' '}
+            Password{' '}
             <input
               css={inputStyle}
               type="password"

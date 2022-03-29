@@ -1,22 +1,31 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Layout from '../components/Layout';
-import { getMoods, getSuggestions } from '../utils/database';
-import { Mood, Suggestion, createUserMood } from '../utils/database';
-import { createCsrfToken } from '../utils/auth';
-import { UserMoodResponseBody } from './api/user_mood';
+import Layout from '../../components/Layout';
+import { getMood, getSuggestions } from '../../utils/database';
+import { Mood, Suggestion } from '../../utils/database';
+import { createCsrfToken } from '../../utils/auth';
+
 import {
   getUserByValidSessionToken,
   getValidSessionByToken,
-} from '../utils/database';
+} from '../../utils/database';
+import { isPropertySignature } from 'typescript';
 
 const containerStyle = css`
+  min-height: 100vh;
   text-align: center;
-  padding-top: 30px;
+  padding-top: 20px;
+  display: table;
+`;
+
+const rowStyleSuggestions = css`
+  width: 33.3%;
+  margin-left: 2px;
+  display: table-cell;
 `;
 
 const logoStyle = css`
@@ -41,53 +50,6 @@ const rowStyle = css`
   margin-left: 0px;
   display: inline-block;
   margin-top: 40px;
-`;
-
-const rowStyleSuggestions = css`
-  width: 30.33%;
-  margin-left: 0px;
-  display: inline-block;
-`;
-
-const noteLabel = css`
-  display: inline-block;
-  color: white;
-  border-radius: 20px;
-  font-family: sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 70px;
-  margin-left: -50px;
-`;
-
-const noteInput = css`
-  display: inline-block;
-  border-radius: 25px;
-  width: 230px;
-  background-color: #fff5ee;
-  height: 95px;
-  font-family: sans-serif;
-  font-size: 16px;
-  color: #484848;
-  border: none;
-  box-sizing: border-box;
-  margin-left: 3px;
-`;
-
-const noteButton = css`
-  background-color: #deb1ae;
-  width: 230px;
-  border-radius: 20px;
-  height: 38px;
-  margin-top: 15px;
-  text-align: center;
-  padding-bottom: 4px;
-  font-family: sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  color: #484848;
-  border: none;
-  box-sizing: border-box;
 `;
 
 const formStyle = css`
@@ -181,8 +143,9 @@ const registerStyle = css`
 // `;
 
 type Props = {
+  moodId: number;
   userObject: { username: string; firstname: string };
-  moods: Mood[];
+  mood: Mood;
   refreshUserProfile: () => void;
   authorized: Boolean;
   user: { id: number; username: string };
@@ -205,20 +168,29 @@ async function moodImageClick(mood_id: number) {
   // change the background color base on moods
   console.log(mood_id);
   if (mood_id === 1) {
-    document.body.style.backgroundColor = '#f2658c';
+    document.body.style.backgroundColor = 'green';
   } else if (mood_id === 2) {
-    document.body.style.backgroundColor = '#23AAD4';
+    document.body.style.backgroundColor = 'grey';
   } else if (mood_id === 3) {
-    document.body.style.backgroundColor = '#F23255';
+    document.body.style.backgroundColor = 'red';
   } else {
-    document.body.style.backgroundColor = '#8d8db9';
+    document.body.style.backgroundColor = 'violet';
   }
   moodClicked = true;
   currentClickedMood = mood_id;
 }
 
 export default function Home(props: Props) {
-  const [note, setNote] = useState('');
+  // Similar to componentDidMount and componentDidUpdate:
+
+  // For changing the background color on page load based on user's mood
+  //useEffect(() => {
+  // Update the document title using the browser API
+  //  moodImageClick(props.moodId);
+  //});
+
+  const [suggestionName, setSuggestionName] = useState('');
+  const [suggestionDescription, setSuggestionDescription] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
@@ -233,80 +205,45 @@ export default function Home(props: Props) {
         //show the moods
         props.authorized ? (
           <div css={containerStyle}>
-            {props.moods.map((mood) => {
-              return (
-                <div key={`mood-${mood.mood_id}`} css={rowStyle}>
-                  <img
-                    src={'/images/' + mood.image}
-                    width="170"
-                    alt="Mood Emojis"
-                    //width="100%"
-                    //height="100%"
-                    //layout="responsive"
-                    //objectFit="cover"
-                    onClick={() => {
-                      moodImageClick(mood.mood_id);
-                    }}
-                  />
-                </div>
-              );
-            })}
-            <div id="take-a-note" className="form__group field">
-              <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-
-                  // console.log(props.csrfToken); for debugging purposes
-
-                  const registerResponse = await fetch('/api/user_mood', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      id: props.user.id,
-                      mood_id: currentClickedMood,
-                      type: 'note',
-                      text: note, // the note that the user takes
-                      image: 'image', //if the user's taken photo should be added to the database, this field can be used
-                      created_at: new Date(Date.now()),
-                      csrfToken: props.csrfToken,
-                    }),
-                  });
-
-                  const registerResponseBody =
-                    (await registerResponse.json()) as UserMoodResponseBody;
-
-                  if ('errors' in registerResponseBody) {
-                    setErrors(registerResponseBody.errors);
-                    return;
-                  }
-
-                  // When the user is registered we want to send her to home page or any page you want.
-
-                  props.refreshUserProfile();
-                  await router.push('/'); // Here I am telling to take the user to the home page.
-
-                  setNote('');
-
-                  if (moodClicked) {
-                    location.href = '/moods/' + currentClickedMood;
-                  }
-                }}
-              >
-                <label css={noteLabel}>
-                  {' '}
-                  Note{' '}
-                  <input
-                    css={noteInput}
-                    value={note}
-                    onChange={(event) => setNote(event.currentTarget.value)}
-                  />
-                </label>
-                <br />
-
-                <button css={noteButton}>save</button>
-              </form>
+            {
+              //show the suggestions
+              props.suggestions.map((suggestion) => {
+                let isShown = false;
+                if (suggestion.mood_id === props.moodId) {
+                  isShown = true;
+                }
+                return (
+                  <div
+                    className="suggestion"
+                    key={`suggestion-${suggestion.suggestion_id}`}
+                    css={rowStyleSuggestions}
+                    style={{ display: isShown ? 'inline-block' : 'none' }}
+                  >
+                    <img
+                      src={suggestion.image}
+                      width="170"
+                      alt="Mood Emojis"
+                      //width="100%"
+                      //height="100%"
+                      //layout="responsive"
+                      //objectFit="cover"
+                      onClick={() => [
+                        setSuggestionDescription(suggestion.description),
+                        setSuggestionName(suggestion.name),
+                      ]}
+                    />
+                  </div>
+                );
+              })
+            }
+            <div
+              id="suggestion-description"
+              className="suggestionDescriptionBox"
+            >
+              <div className="suggestionName">{suggestionName}</div>
+              <div className="suggestionDescription">
+                {suggestionDescription}{' '}
+              </div>
             </div>
           </div>
         ) : (
@@ -376,7 +313,7 @@ export default function Home(props: Props) {
             >
               <div css={labelStyle}>
                 <label>
-                  Email{' '}
+                  Username*{' '}
                   <input
                     css={inputStyle1}
                     value={username}
@@ -385,7 +322,7 @@ export default function Home(props: Props) {
                 </label>
                 <br />
                 <label>
-                  Password{' '}
+                  Password*{' '}
                   <input
                     css={inputStyle2}
                     type="password"
@@ -428,9 +365,12 @@ export default function Home(props: Props) {
 // (ONLY FILES IN /pages) and gets imported
 // by Next.js
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
+  const moodId = parseInt(context.query.moodId as string);
+  const mood = await getMood(moodId);
+
   const suggestions = await getSuggestions();
-  const moods = await getMoods();
+
   // ! Redirect from HTTP to HTTPS on Heroku
   if (
     context.req.headers.host &&
@@ -456,7 +396,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (user) {
       return {
         props: {
-          moods: moods,
+          moodId: moodId,
+          mood: mood,
           user: user,
           suggestions: suggestions,
           authorized: true,
