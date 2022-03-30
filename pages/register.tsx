@@ -69,7 +69,9 @@ const buttonStyle = css`
 `;
 
 const errorStyle = css`
-  color: red;
+  color: #f00;
+  margin-left: 50px;
+  padding-top: 5px;
 `;
 
 type Errors = { message: string }[];

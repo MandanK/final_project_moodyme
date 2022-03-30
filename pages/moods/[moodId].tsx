@@ -16,24 +16,66 @@ import {
 import { isPropertySignature } from 'typescript';
 
 const containerStyle = css`
-  min-height: 100vh;
   text-align: center;
-  padding-top: 20px;
+  padding-top: 180px;
   display: table;
 `;
 
 const rowStyleSuggestions = css`
-  width: 33.3%;
+  width: 27%;
   margin-left: 2px;
   display: table-cell;
+  padding: 4px;
+  padding-bottom: 20px;
+  cursor: pointer;
 `;
 
 const logoStyle = css`
   display: flex;
-  margin-top: 70px;
+  margin-top: 230px;
   margin-bottom: -15px;
   text-align: center;
   justify-content: center;
+`;
+
+const suggestionDescriptionBox = css`
+  width: 300px;
+  height: 135px;
+  padding: 50px;
+  border-radius: 30px;
+  box-sizing: content-box;
+  margin-top: 50px;
+  margin-left: 36px;
+  background-color: #f8f8f8;
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: #484848;
+  line-height: 1.7em;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+`;
+
+const pStyle = css`
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -5px;
+`;
+
+const messageStyle = css`
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -5px;
+`;
+
+const aStyle = css`
+  color: #deb1ae;
+  cursor: pointer;
 `;
 
 const h1Style = css`
@@ -189,6 +231,7 @@ export default function Home(props: Props) {
   //  moodImageClick(props.moodId);
   //});
 
+  const [suggestionLink, setSuggestionLink] = useState('');
   const [suggestionName, setSuggestionName] = useState('');
   const [suggestionDescription, setSuggestionDescription] = useState('');
   const [username, setUsername] = useState('');
@@ -221,8 +264,8 @@ export default function Home(props: Props) {
                   >
                     <img
                       src={suggestion.image}
-                      width="170"
-                      alt="Mood Emojis"
+                      width="110"
+                      alt="suggestions images"
                       //width="100%"
                       //height="100%"
                       //layout="responsive"
@@ -230,123 +273,47 @@ export default function Home(props: Props) {
                       onClick={() => [
                         setSuggestionDescription(suggestion.description),
                         setSuggestionName(suggestion.name),
+                        setSuggestionLink(suggestion.link),
                       ]}
                     />
                   </div>
                 );
               })
             }
-            <div
-              id="suggestion-description"
-              className="suggestionDescriptionBox"
-            >
+            <div id="suggestion-description" css={suggestionDescriptionBox}>
               <div className="suggestionName">{suggestionName}</div>
               <div className="suggestionDescription">
                 {suggestionDescription}{' '}
               </div>
+              {suggestionLink !== 'none' ? (
+                <div className="suggestionLink">
+                  {' '}
+                  <a href={suggestionLink}>Click here!</a>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         ) : (
           <div>
             <div css={logoStyle}>
-              <div>
-                <Link href="/moods">
-                  <a>
-                    <img
-                      src="/images/logo.png"
-                      width="113"
-                      alt="emotional emojis"
-                    />
-                  </a>
-                </Link>
-              </div>
-              <h1 css={h1Style}>Moody Me!</h1>
-            </div>
-            <form
-              css={formStyle}
-              onSubmit={async (event) => {
-                event.preventDefault();
-
-                const loginResponse = await fetch('/api/login', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    csrfToken: props.csrfToken,
-                  }),
-                });
-
-                const loginResponseBody = await loginResponse.json();
-
-                if ('errors' in loginResponseBody) {
-                  setErrors(loginResponseBody.errors);
-                  return;
-                }
-
-                // If for some reason a page is locked for the user and they need to log in before accessing to that page. We they loge in, the will be directed to the page they wanted to access before log in.
-
-                const returnTo = router.query.returnTo;
-                console.log('returnTo', returnTo);
-
-                if (
-                  returnTo &&
-                  !Array.isArray(returnTo) &&
-                  // Security: Validate returnTo parameter against valid path
-                  // (because this is untrusted user input)
-                  /^\/[a-zA-Z0-9-?=]*$/.test(returnTo)
-                ) {
-                  await router.push(returnTo);
-                  return;
-                }
-
-                // When the user is registered we want to send her to home page or any page you want.
-
-                // Login worked, clear the errors and redirected to the homepage.
-
-                setErrors([]);
-                props.refreshUserProfile();
-                await router.push(`/`); // Here I am telling to take the user to the home page.
-              }}
-            >
-              <div css={labelStyle}>
-                <label>
-                  Username*{' '}
-                  <input
-                    css={inputStyle1}
-                    value={username}
-                    onChange={(event) => setUsername(event.currentTarget.value)}
+              <Link href="/">
+                <a>
+                  <img
+                    src="/images/logo.png"
+                    width="113"
+                    alt="emotional emojis"
                   />
-                </label>
-                <br />
-                <label>
-                  Password*{' '}
-                  <input
-                    css={inputStyle2}
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.currentTarget.value)}
-                  />
-                </label>
-                <br />
-              </div>
-              <button css={buttonStyle}>Login</button>
-            </form>
-
-            <div css={errorStyle}>
-              {errors.map((error) => {
-                return (
-                  <div key={`error-${error.message}`}>{error.message}</div>
-                );
-              })}
+                </a>
+              </Link>
             </div>
             <br />
-            <br />
-            <div>
-              <a css={registerStyle} href="/register">
-                <button css={textStyle}>Don't have an account?</button>
+            <p css={pStyle}>Please login first</p>
+            <div css={messageStyle}>
+              <a css={aStyle} href="/">
+                {' '}
+                Go to Home
               </a>
             </div>
           </div>

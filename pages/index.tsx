@@ -21,7 +21,7 @@ const containerStyle = css`
 
 const logoStyle = css`
   display: flex;
-  margin-top: 70px;
+  margin-top: 60px;
   margin-bottom: -15px;
   text-align: center;
   justify-content: center;
@@ -40,13 +40,7 @@ const rowStyle = css`
   width: 44.33%;
   margin-left: 0px;
   display: inline-block;
-  margin-top: 40px;
-`;
-
-const rowStyleSuggestions = css`
-  width: 30.33%;
-  margin-left: 0px;
-  display: inline-block;
+  margin-top: 30px;
 `;
 
 const noteLabel = css`
@@ -56,7 +50,7 @@ const noteLabel = css`
   font-family: sans-serif;
   font-size: 18px;
   font-weight: bold;
-  margin-top: 70px;
+  margin-top: 55px;
   margin-left: -50px;
 `;
 
@@ -175,10 +169,25 @@ const textStyle = css`
 const registerStyle = css`
   text-decoration-line: none;
 `;
-//const columnStyle = css`
-//float: left;
-//padding: 5px;
-// `;
+
+const privacyStyle = css`
+  width: 290px;
+  height: 45px;
+  padding: 50px;
+  border-radius: 10px;
+  box-sizing: content-box;
+  margin-top: 60px;
+  margin-left: 43px;
+  background-color: #f5e7e6;
+  padding-top: 18px;
+  padding-left: 30px;
+  padding-right: 10px;
+  padding-bottom: 40px;
+  text-align: left;
+  font-size: 14px;
+  color: #484848;
+  line-height: 1.7em;
+`;
 
 type Props = {
   userObject: { username: string; firstname: string };
@@ -191,7 +200,9 @@ type Props = {
 };
 
 const errorStyle = css`
-  color: red;
+  color: #f00;
+  margin-left: 50px;
+  padding-top: 5px;
 `;
 
 type Errors = { message: string }[];
@@ -411,6 +422,11 @@ export default function Home(props: Props) {
               <a css={registerStyle} href="/register">
                 <button css={textStyle}>Don't have an account?</button>
               </a>
+            </div>
+            <div css={privacyStyle}>
+              We use essential cookies to allow users to login. To refuse
+              consent, please leave. By logging in you agree to our Terms of
+              use.
             </div>
           </div>
         )

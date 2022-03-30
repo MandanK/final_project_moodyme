@@ -37,7 +37,7 @@ export default async function loginHandler(
       !request.body.csrfToken
     ) {
       response.status(400).json({
-        errors: [{ message: 'Username or password or CSRF not provided' }],
+        errors: [{ message: 'Username or password not provided' }],
       });
 
       return; //Important: will prevent "Headers already sent" error

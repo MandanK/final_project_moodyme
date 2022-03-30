@@ -41,7 +41,7 @@ export default async function registerHandler(
       !request.body.csrfToken
     ) {
       response.status(400).json({
-        errors: [{ message: 'Username, password or CSRF token not provided' }],
+        errors: [{ message: 'Username or password not provided' }],
       });
 
       return; //Important: will prevent "Headers already sent" error
