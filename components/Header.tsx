@@ -69,11 +69,6 @@ export default function Header(props: Props) {
           <a href="/logout">Logout</a>
         ) : (
           <>
-            <Link href="/login">
-              <a css={linkStyle} data-test-id="products-link">
-                Login
-              </a>
-            </Link>
             <Link href="/register">
               <a css={linkStyle} data-test-id="products-link">
                 Register

@@ -17,8 +17,12 @@ import { isPropertySignature } from 'typescript';
 
 const containerStyle = css`
   text-align: center;
-  padding-top: 180px;
   display: table;
+`;
+
+const moodEmojiStyle = css`
+  margin-top: 15px;
+  margin-bottom: 25px;
 `;
 
 const rowStyleSuggestions = css`
@@ -27,15 +31,8 @@ const rowStyleSuggestions = css`
   display: table-cell;
   padding: 4px;
   padding-bottom: 20px;
+  margin-bottom: 15px;
   cursor: pointer;
-`;
-
-const logoStyle = css`
-  display: flex;
-  margin-top: 230px;
-  margin-bottom: -15px;
-  text-align: center;
-  justify-content: center;
 `;
 
 const suggestionDescriptionBox = css`
@@ -44,18 +41,32 @@ const suggestionDescriptionBox = css`
   padding: 50px;
   border-radius: 30px;
   box-sizing: content-box;
-  margin-top: 50px;
   margin-left: 36px;
   background-color: #f8f8f8;
-  padding-top: 15px;
+  padding-top: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 40px;
+  padding-bottom: 46px;
   text-align: center;
   font-size: 14px;
   color: #484848;
   line-height: 1.7em;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+`;
+
+const suggestionNameStyle = css`
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 2em;
+`;
+
+// first login page
+const logoStyle = css`
+  display: flex;
+  margin-top: 230px;
+  margin-bottom: -15px;
+  text-align: center;
+  justify-content: center;
 `;
 
 const pStyle = css`
@@ -77,112 +88,6 @@ const aStyle = css`
   color: #deb1ae;
   cursor: pointer;
 `;
-
-const h1Style = css`
-  font-size: 16px;
-  color: white;
-  font-weight: bold;
-  line-height: 0.7;
-  padding-top: 42px;
-  margin-left: -5px;
-`;
-
-const rowStyle = css`
-  width: 44.33%;
-  margin-left: 0px;
-  display: inline-block;
-  margin-top: 40px;
-`;
-
-const formStyle = css`
-  margin: 0;
-  position: relative;
-  padding-top: 0px;
-  color: white;
-  text-align: center;
-`;
-
-const labelStyle = css`
-  text-align: left;
-  display: block;
-  font-family: sans-serif;
-  font-size: 18px;
-  margin-top: 30px;
-  padding-left: 50px;
-`;
-
-const inputStyle1 = css`
-  display: block;
-  width: 320px;
-  height: 35px;
-  margin-top: 10px;
-  margin-bottom: -10px;
-  padding: 10px;
-  font-family: sans-serif;
-  font-size: 18px;
-  color: #484848;
-  border: none;
-  box-sizing: border-box;
-`;
-
-const inputStyle2 = css`
-  display: block;
-  width: 320px;
-  height: 35px;
-  margin-top: 10px;
-  padding: 10px;
-  font-family: sans-serif;
-  font-size: 18px;
-  color: #484848;
-  border: none;
-  box-sizing: border-box;
-`;
-
-const buttonStyle = css`
-  display: block;
-  background-color: #deb1ae;
-  width: 320px;
-  border-radius: 20px;
-  height: 35px;
-  margin-top: -10px;
-  margin-left: 50px;
-  padding: 10px;
-  font-family: sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  color: #484848;
-  border: none;
-  box-sizing: border-box;
-  cursor: pointer;
-  text-decoration-line: none;
-`;
-
-const textStyle = css`
-  display: block;
-  background-color: #f8f8f8;
-  width: 320px;
-  border-radius: 20px;
-  height: 35px;
-  margin-top: -10px;
-  margin-left: 50px;
-  padding: 10px;
-  font-family: sans-serif;
-  font-size: 14px;
-  padding-top: 7px;
-  font-weight: bold;
-  color: #484848;
-  border: none;
-  box-sizing: border-box;
-  cursor: pointer;
-`;
-
-const registerStyle = css`
-  text-decoration-line: none;
-`;
-//const columnStyle = css`
-//float: left;
-//padding: 5px;
-// `;
 
 type Props = {
   moodId: number;
@@ -232,6 +137,7 @@ export default function Home(props: Props) {
   //});
 
   const [suggestionLink, setSuggestionLink] = useState('');
+  const [suggestionImageExtra, setSuggestionImageExtra] = useState('');
   const [suggestionName, setSuggestionName] = useState('');
   const [suggestionDescription, setSuggestionDescription] = useState('');
   const [username, setUsername] = useState('');
@@ -248,6 +154,14 @@ export default function Home(props: Props) {
         //show the moods
         props.authorized ? (
           <div css={containerStyle}>
+            <div css={moodEmojiStyle}>
+              <img
+                src={'/images/moods/image' + props.moodId + '.png'}
+                width="170"
+                alt="Mood image"
+              />
+            </div>
+
             {
               //show the suggestions
               props.suggestions.map((suggestion) => {
@@ -274,6 +188,8 @@ export default function Home(props: Props) {
                         setSuggestionDescription(suggestion.description),
                         setSuggestionName(suggestion.name),
                         setSuggestionLink(suggestion.link),
+                        setSuggestionImageExtra(suggestion.image_extra),
+                        (moodClicked = true),
                       ]}
                     />
                   </div>
@@ -281,17 +197,29 @@ export default function Home(props: Props) {
               })
             }
             <div id="suggestion-description" css={suggestionDescriptionBox}>
-              <div className="suggestionName">{suggestionName}</div>
+              <div css={suggestionNameStyle}>{suggestionName}</div>
               <div className="suggestionDescription">
                 {suggestionDescription}{' '}
               </div>
-              {suggestionLink !== 'none' ? (
+              {suggestionImageExtra === 'none' || !moodClicked ? (
+                <div></div>
+              ) : (
+                <div className="suggestionExtraImage">
+                  {' '}
+                  <img
+                    src="/images/suggestions/breath-main.gif"
+                    width="146"
+                    alt="emotional emojis"
+                  />
+                </div>
+              )}
+              {suggestionLink === 'none' || !moodClicked ? (
+                <div></div>
+              ) : (
                 <div className="suggestionLink">
                   {' '}
                   <a href={suggestionLink}>Click here!</a>
                 </div>
-              ) : (
-                <div></div>
               )}
             </div>
           </div>

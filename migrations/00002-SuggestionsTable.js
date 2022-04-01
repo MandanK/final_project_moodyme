@@ -139,7 +139,7 @@ const suggestions = [
     name: 'Breath with me',
     image: '/images/suggestions/breath.gif',
     image_extra: '/images/suggestions/breath-main.gif.',
-    description: 'Focus on the circle',
+    description: '',
     link: 'none',
     type: 'none',
     is_enabled: 'true',

@@ -26,6 +26,7 @@ export type Suggestion = {
   mood_id: number;
   name: string;
   image: string;
+  link: string;
   image_extra: string;
   description: string;
   type: string;
@@ -84,6 +85,18 @@ export async function getUserById(id: number) {
    id = ${id}
   `;
   return user && camelcaseKeys(user);
+}
+
+export async function getUserMoodByUserId(id: number) {
+  const userMood = await sql<UserMood[]>`
+  SELECT
+  *
+  FROM
+    user_moods
+  WHERE
+   id = ${id}
+  `;
+  return userMood; //&& camelcaseKeys(suggestions);
 }
 
 export async function getSuggestionsByMoodId(mood_id: number) {

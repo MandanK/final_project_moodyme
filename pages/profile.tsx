@@ -1,7 +1,7 @@
-import CalendarPersonalize from 'react-calendar-personalize-color';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 import { GetServerSidePropsContext } from 'next';
-import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { css } from '@emotion/react';
@@ -12,55 +12,227 @@ import { getMoods, getSuggestions } from '../utils/database';
 import { Mood, Suggestion, createUserMood } from '../utils/database';
 import { createCsrfToken } from '../utils/auth';
 import { UserMoodResponseBody } from './api/user_mood';
-import Calendar from 'react-calendar';
-
 import {
   getUserByValidSessionToken,
   getValidSessionByToken,
+  getUserMoodByUserId,
 } from '../utils/database';
-import styled from 'styled-components';
-import hello from './api/hello';
 
-const styles = {};
+export type UserMoodSerialised = {
+  id: number;
+  mood_id: number;
+  type: string;
+  text: string;
+  image: string;
+  created_at: string; //serialised date
+};
 
-const highlight = css`
-  // padding: 0 100px;
-  color: red;
+const ulListStyle = css`
+  list-style: none;
 `;
 
-const containerStyle = css`
-  // padding: 0 100px;
-  min-height: 100vh;
+const lineStyle = css`
+  width: 70px;
   text-align: center;
 `;
 
+const containerStyle = css`
+  text-align: center;
+  padding-top: 30px;
+`;
+
+const logoStyle = css`
+  display: flex;
+  margin-top: 60px;
+  margin-bottom: -15px;
+  text-align: center;
+  justify-content: center;
+`;
+
 const h1Style = css`
-  color: #e5e5e5;
-  padding-top: 85px;
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+  line-height: 0.7;
+  padding-top: 42px;
+  margin-left: -5px;
 `;
 
 const rowStyle = css`
   width: 44.33%;
-  //padding: 1px;
   margin-left: 0px;
-  //margin-top: 40px;
   display: inline-block;
+  margin-top: 30px;
 `;
 
-const rowStyleSuggestions = css`
-  width: 30.33%;
-  //padding: 1px;
-  margin-left: 0px;
-  //margin-top: 40px;
+const noteLabel = css`
   display: inline-block;
+  color: white;
+  border-radius: 20px;
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 55px;
+  margin-left: -50px;
 `;
 
-//const columnStyle = css`
-//float: left;
-//padding: 5px;
-// `;
+const noteInput = css`
+  display: inline-block;
+  border-radius: 25px;
+  width: 230px;
+  background-color: #fff5ee;
+  height: 95px;
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #484848;
+  border: none;
+  box-sizing: border-box;
+  margin-left: 3px;
+`;
+
+const noteButton = css`
+  background-color: #deb1ae;
+  width: 230px;
+  border-radius: 20px;
+  height: 38px;
+  margin-top: 15px;
+  text-align: center;
+  padding-bottom: 4px;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #484848;
+  border: none;
+  box-sizing: border-box;
+`;
+
+const formStyle = css`
+  margin: 0;
+  position: relative;
+  padding-top: 0px;
+  color: white;
+  text-align: center;
+`;
+
+const labelStyle = css`
+  text-align: left;
+  display: block;
+  font-family: sans-serif;
+  font-size: 18px;
+  margin-top: 30px;
+  padding-left: 50px;
+`;
+
+const inputStyle1 = css`
+  display: block;
+  width: 320px;
+  height: 35px;
+  margin-top: 10px;
+  margin-bottom: -10px;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 18px;
+  color: #484848;
+  border: none;
+  box-sizing: border-box;
+`;
+
+const pStyle = css`
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -5px;
+`;
+
+const messageStyle = css`
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -5px;
+`;
+
+const aStyle = css`
+  color: #deb1ae;
+  cursor: pointer;
+`;
+
+const inputStyle2 = css`
+  display: block;
+  width: 320px;
+  height: 35px;
+  margin-top: 10px;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 18px;
+  color: #484848;
+  border: none;
+  box-sizing: border-box;
+`;
+
+const buttonStyle = css`
+  display: block;
+  background-color: #deb1ae;
+  width: 320px;
+  border-radius: 20px;
+  height: 35px;
+  margin-top: -10px;
+  margin-left: 50px;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #484848;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  text-decoration-line: none;
+`;
+
+const textStyle = css`
+  display: block;
+  background-color: #f8f8f8;
+  width: 320px;
+  border-radius: 20px;
+  height: 35px;
+  margin-top: -10px;
+  margin-left: 50px;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding-top: 7px;
+  font-weight: bold;
+  color: #484848;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+`;
+
+const registerStyle = css`
+  text-decoration-line: none;
+`;
+
+const privacyStyle = css`
+  width: 290px;
+  height: 45px;
+  padding: 50px;
+  border-radius: 10px;
+  box-sizing: content-box;
+  margin-top: 60px;
+  margin-left: 43px;
+  background-color: #f5e7e6;
+  padding-top: 18px;
+  padding-left: 30px;
+  padding-right: 10px;
+  padding-bottom: 40px;
+  text-align: left;
+  font-size: 14px;
+  color: #484848;
+  line-height: 1.7em;
+`;
 
 type Props = {
+  user_moods: UserMoods[];
   userObject: { username: string; firstname: string };
   moods: Mood[];
   refreshUserProfile: () => void;
@@ -71,7 +243,9 @@ type Props = {
 };
 
 const errorStyle = css`
-  color: red;
+  color: #f00;
+  margin-left: 50px;
+  padding-top: 5px;
 `;
 
 type Errors = { message: string }[];
@@ -85,132 +259,217 @@ async function moodImageClick(mood_id: number) {
   // change the background color base on moods
   console.log(mood_id);
   if (mood_id === 1) {
-    document.body.style.backgroundColor = 'green';
+    document.body.style.backgroundColor = '#f2658c';
   } else if (mood_id === 2) {
-    document.body.style.backgroundColor = 'grey';
+    document.body.style.backgroundColor = '#23AAD4';
   } else if (mood_id === 3) {
-    document.body.style.backgroundColor = 'red';
+    document.body.style.backgroundColor = '#F23255';
   } else {
-    document.body.style.backgroundColor = 'violet';
+    document.body.style.backgroundColor = '#8d8db9';
   }
   moodClicked = true;
   currentClickedMood = mood_id;
 }
 
-//const mark = ['04-03-2020', '03-03-2020', '05-03-2020'];
+const ColoredLine = ({ color = 'green' }) => (
+  <hr
+    style={{
+      color: color,
+      backgroundColor: color,
+      height: 6,
+      width: 300,
+    }}
+  />
+);
 
 export default function Home(props: Props) {
-  const [checkDate, setCheckDate] = React.useState(null);
-
-  const [value, onChange] = useState(new Date());
-  const mark = ['04-03-2020', '03-03-2020', '05-03-2020'];
+  const [showAll, setShowAll] = useState(false);
+  const [dateValue, setDateValue] = useState(new Date());
+  let offset = dateValue.getTimezoneOffset();
+  let dateValueCorrected = dateValue;
   const [note, setNote] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
+
+  const handleChange = () => {
+    setShowAll(!showAll);
+  };
+
   return (
     <Layout userObject={props.userObject}>
       <Head>
         <title>MoodyMe!</title>
         <meta name="description" content="Track/Change Your Mood!" />
       </Head>
-      {props.authorized ? (
-        <div css={containerStyle}>
-          <div>
-            <Calendar
-              css={highlight}
-              onChange={onChange}
-              //value={state.date}
-              tileClassName="highlight"
-              tileDisabled={({ date }) => date.getDay() === 0}
-              /*maxDate={new Date(2020, 1, 0)}</div>*/
-              minDate={new Date()}
-            ></Calendar>
-          </div>
-          );
-        </div>
-      ) : (
-        <div>
-          <h1>LOGIN</h1>
-          <h1>Login</h1>
-          <form
-            onSubmit={async (event) => {
-              event.preventDefault();
+      {
+        //show the moods
+        props.authorized ? (
+          <div css={containerStyle}>
+            <Calendar onChange={setDateValue} value={dateValue} />
 
-              const loginResponse = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  username: username,
-                  password: password,
-                  csrfToken: props.csrfToken,
-                }),
-              });
-
-              const loginResponseBody = await loginResponse.json();
-
-              if ('errors' in loginResponseBody) {
-                setErrors(loginResponseBody.errors);
-                return;
-              }
-
-              // If for some reason a page is locked for the user and they need to log in before accessing to that page. We they loge in, the will be directed to the page they wanted to access before log in.
-
-              const returnTo = router.query.returnTo;
-              console.log('returnTo', returnTo);
-
-              if (
-                returnTo &&
-                !Array.isArray(returnTo) &&
-                // Security: Validate returnTo parameter against valid path
-                // (because this is untrusted user input)
-                /^\/[a-zA-Z0-9-?=]*$/.test(returnTo)
-              ) {
-                await router.push(returnTo);
-                return;
-              }
-
-              // When the user is registered we want to send her to home page or any page you want.
-
-              // Login worked, clear the errors and redirected to the homepage.
-
-              setErrors([]);
-              props.refreshUserProfile();
-              await router.push(`/`); // Here I am telling to take the user to the home page.
-            }}
-          >
             <label>
-              Username:{' '}
               <input
-                value={username}
-                onChange={(event) => setUsername(event.currentTarget.value)}
+                type="checkbox"
+                checked={showAll}
+                onChange={handleChange}
               />
+              Show All!
             </label>
-            <label>
-              Password:{' '}
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.currentTarget.value)}
-              />
-            </label>
-            <button>Login</button>
-          </form>
 
-          <div css={errorStyle}>
-            {errors.map((error) => {
-              return <div key={`error-${error.message}`}>{error.message}</div>;
-            })}
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showAll}
+                  onChange={handleChange}
+                />
+                <img
+                  src={'/images/moods/image1.png'}
+                  width="40"
+                  alt="Mood Emojis"
+                  //width="100%"
+                  //height="100%"
+                  //layout="responsive"
+                  //objectFit="cover"
+                  //onClick={() => {
+                  //  moodImageClick(mood.mood_id);
+                  //}}
+                />
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showAll}
+                  onChange={handleChange}
+                />
+                <img
+                  src={'/images/moods/image2.png'}
+                  width="40"
+                  alt="Mood Emojis"
+                  //width="100%"
+                  //height="100%"
+                  //layout="responsive"
+                  //objectFit="cover"
+                  //onClick={() => {
+                  //  moodImageClick(mood.mood_id);
+                  //}}
+                />
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showAll}
+                  onChange={handleChange}
+                />
+                <img
+                  src={'/images/moods/image3.png'}
+                  width="40"
+                  alt="Mood Emojis"
+                  //width="100%"
+                  //height="100%"
+                  //layout="responsive"
+                  //objectFit="cover"
+                  //onClick={() => {
+                  //  moodImageClick(mood.mood_id);
+                  //}}
+                />
+              </label>
+
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showAll}
+                  onChange={handleChange}
+                />
+                <img
+                  src={'/images/moods/image4.png'}
+                  width="40"
+                  alt="Mood Emojis"
+                  //width="100%"
+                  //height="100%"
+                  //layout="responsive"
+                  //objectFit="cover"
+                  //onClick={() => {
+                  //  moodImageClick(mood.mood_id);
+                  //}}
+                />
+              </label>
+            </div>
+
+            <ul css={ulListStyle}>
+              {props.user_moods.map((mood) => {
+                let isShown = false;
+                if (
+                  showAll ||
+                  new Date(JSON.parse(mood.created_at))
+                    .toISOString()
+                    .split('T')[0] ===
+                    new Date(dateValue.getTime() - offset * 60 * 1000)
+                      .toISOString()
+                      .split('T')[0] // We need to calculate offset, since ISOString considers this and the dates will be wrong if this is not taken into consideration
+                ) {
+                  isShown = true;
+                }
+
+                return (
+                  <li style={{ display: isShown ? 'inline-block' : 'none' }}>
+                    <div></div>
+                    <div>
+                      {
+                        new Date(JSON.parse(mood.created_at))
+                          .toISOString()
+                          .split('T')[0]
+                      }
+                    </div>
+                    <div key={`mood-${mood.mood_id}`} css={rowStyle}>
+                      <img
+                        src={'/images/moods/image' + mood.mood_id + '.png'}
+                        width="170"
+                        alt="Mood Emojis"
+                        //width="100%"
+                        //height="100%"
+                        //layout="responsive"
+                        //objectFit="cover"
+                        onClick={() => {
+                          moodImageClick(mood.mood_id);
+                        }}
+                      />
+                      <div>{mood.text}</div>
+                    </div>
+                    <ColoredLine color="red" />
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-
+        ) : (
           <div>
-            <div>Have you account? sign-in</div>
+            <div css={logoStyle}>
+              <Link href="/">
+                <a>
+                  <img
+                    src="/images/logo.png"
+                    width="113"
+                    alt="emotional emojis"
+                  />
+                </a>
+              </Link>
+            </div>
+            <br />
+            <p css={pStyle}>Please login first</p>
+            <div css={messageStyle}>
+              <a css={aStyle} href="/">
+                {' '}
+                Go to Home
+              </a>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
     </Layout>
   );
 }
@@ -244,14 +503,30 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const user = await getUserByValidSessionToken(token);
 
+  let user_moods_serialized = [] as UserMoodSerialised[];
+
   // 2. If there is a user, return that and render page
 
   if (token) {
     // 2. if it is valid and redirect
     const session = await getValidSessionByToken(token);
     if (user) {
+      const user_Moods = await getUserMoodByUserId(user.id);
+      user_Moods.map((user_mood) => {
+        let user_mood_serialized: UserMoodSerialised = {
+          id: user_mood.id,
+          mood_id: user_mood.mood_id,
+          type: user_mood.type,
+          text: user_mood.text,
+          image: user_mood.image,
+          created_at: JSON.stringify(user_mood.created_at),
+        };
+        user_moods_serialized.push(user_mood_serialized);
+      });
+
       return {
         props: {
+          user_moods: user_moods_serialized,
           moods: moods,
           user: user,
           suggestions: suggestions,

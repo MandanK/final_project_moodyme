@@ -144,3 +144,8 @@ export async function getServerSideProps(context) {
 
 
                     <Link href={`#suggestion-description`}>
+
+
+
+
+dateValue.toISOString().split('T')[0]
