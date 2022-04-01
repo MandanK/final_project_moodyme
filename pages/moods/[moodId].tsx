@@ -155,11 +155,15 @@ export default function Home(props: Props) {
         props.authorized ? (
           <div css={containerStyle}>
             <div css={moodEmojiStyle}>
-              <img
-                src={'/images/moods/image' + props.moodId + '.png'}
-                width="170"
-                alt="Mood image"
-              />
+              <Link href="/">
+                <a>
+                  <img
+                    src={'/images/moods/image' + props.moodId + '.png'}
+                    width="170"
+                    alt="Mood image"
+                  />
+                </a>
+              </Link>
             </div>
 
             {

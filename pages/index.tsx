@@ -176,7 +176,7 @@ const privacyStyle = css`
   padding: 50px;
   border-radius: 10px;
   box-sizing: content-box;
-  margin-top: 60px;
+  margin-top: 55px;
   margin-left: 43px;
   background-color: #f5e7e6;
   padding-top: 18px;

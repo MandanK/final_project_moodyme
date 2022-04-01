@@ -27,18 +27,55 @@ export type UserMoodSerialised = {
   created_at: string; //serialised date
 };
 
+const containerStyle = css`
+  text-align: center;
+  padding-top: 55px;
+`;
+
+const calendarStyle = css`
+  margin-left: 29px;
+  margin-bottom: 38px;
+`;
+
+const label1Style = css`
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+`;
+
+const input1Style = css`
+  margin-right: 15px;
+  margin-bottom: 40px;
+  width: 19px;
+  height: 19px;
+`;
+
+const input2Style = css`
+  margin-bottom: 40px;
+  margin-right: -5px;
+  width: 19px;
+  height: 19px;
+`;
+
 const ulListStyle = css`
   list-style: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  padding-right: 46px;
+`;
+
+const rowStyle = css`
+  width: 44.33%;
+  display: inline-block;
+  margin-top: 15px;
+  margin-bottom: 0px;
 `;
 
 const lineStyle = css`
   width: 70px;
   text-align: center;
-`;
-
-const containerStyle = css`
-  text-align: center;
-  padding-top: 30px;
 `;
 
 const logoStyle = css`
@@ -56,13 +93,6 @@ const h1Style = css`
   line-height: 0.7;
   padding-top: 42px;
   margin-left: -5px;
-`;
-
-const rowStyle = css`
-  width: 44.33%;
-  margin-left: 0px;
-  display: inline-block;
-  margin-top: 30px;
 `;
 
 const noteLabel = css`
@@ -307,27 +337,31 @@ export default function Home(props: Props) {
         //show the moods
         props.authorized ? (
           <div css={containerStyle}>
-            <Calendar onChange={setDateValue} value={dateValue} />
+            <div css={calendarStyle}>
+              <Calendar onChange={setDateValue} value={dateValue} />
+            </div>
 
-            <label>
+            <label css={label1Style}>
               <input
+                css={input1Style}
                 type="checkbox"
                 checked={showAll}
                 onChange={handleChange}
               />
-              Show All!
+              Show All
             </label>
 
             <div>
               <label>
                 <input
+                  css={input2Style}
                   type="checkbox"
                   checked={showAll}
                   onChange={handleChange}
                 />
                 <img
                   src={'/images/moods/image1.png'}
-                  width="40"
+                  width="70"
                   alt="Mood Emojis"
                   //width="100%"
                   //height="100%"
@@ -341,13 +375,14 @@ export default function Home(props: Props) {
 
               <label>
                 <input
+                  css={input2Style}
                   type="checkbox"
                   checked={showAll}
                   onChange={handleChange}
                 />
                 <img
                   src={'/images/moods/image2.png'}
-                  width="40"
+                  width="70"
                   alt="Mood Emojis"
                   //width="100%"
                   //height="100%"
@@ -361,13 +396,14 @@ export default function Home(props: Props) {
 
               <label>
                 <input
+                  css={input2Style}
                   type="checkbox"
                   checked={showAll}
                   onChange={handleChange}
                 />
                 <img
                   src={'/images/moods/image3.png'}
-                  width="40"
+                  width="70"
                   alt="Mood Emojis"
                   //width="100%"
                   //height="100%"
@@ -381,13 +417,14 @@ export default function Home(props: Props) {
 
               <label>
                 <input
+                  css={input2Style}
                   type="checkbox"
                   checked={showAll}
                   onChange={handleChange}
                 />
                 <img
                   src={'/images/moods/image4.png'}
-                  width="40"
+                  width="70"
                   alt="Mood Emojis"
                   //width="100%"
                   //height="100%"
@@ -428,7 +465,7 @@ export default function Home(props: Props) {
                     <div key={`mood-${mood.mood_id}`} css={rowStyle}>
                       <img
                         src={'/images/moods/image' + mood.mood_id + '.png'}
-                        width="170"
+                        width="130"
                         alt="Mood Emojis"
                         //width="100%"
                         //height="100%"

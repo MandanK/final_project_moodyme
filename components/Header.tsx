@@ -8,8 +8,6 @@ const headerStyles = css`
   // padding: 0 100px;
   border-radius: 4px;
   display: flex;
-  position: -webkit-sticky;
-  position: sticky;
   top: 0;
 
   a + a {
@@ -64,16 +62,22 @@ export default function Header(props: Props) {
         </a>
       </div>
       <div css={userObject}>
-        <div>{props.userObject && <div>{props.userObject.firstname}</div>}</div>
+        <Link href="/profile">
+          <a>
+            <div>
+              {props.userObject && <div>{props.userObject.firstname}</div>}
+            </div>
+          </a>
+        </Link>
         {props.userObject ? (
-          <a href="/logout">Logout</a>
+          <a href="/register">Register</a>
         ) : (
           <>
-            <Link href="/register">
+            {/*<Link href="/register">
               <a css={linkStyle} data-test-id="products-link">
                 Register
               </a>
-            </Link>
+        </Link>*/}
           </>
         )}
       </div>
