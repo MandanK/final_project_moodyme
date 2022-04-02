@@ -9,7 +9,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import { getMoods, getSuggestions } from '../utils/database';
-import { Mood, Suggestion, createUserMood } from '../utils/database';
+import { Mood, UserMood, Suggestion, createUserMood } from '../utils/database';
 import { createCsrfToken } from '../utils/auth';
 import { UserMoodResponseBody } from './api/user_mood';
 import {
@@ -262,7 +262,7 @@ const privacyStyle = css`
 `;
 
 type Props = {
-  user_moods: UserMoods[];
+  user_moods: UserMood[];
   userObject: { username: string; firstname: string };
   moods: Mood[];
   refreshUserProfile: () => void;
