@@ -18,6 +18,11 @@ import {
   getUserMoodByUserId,
 } from '../utils/database';
 
+const happyBackground = '#f2658c';
+const sadBackground = '#23AAD4';
+const angryBackground = '#F23255';
+const stressedBackground = '#8d8db9';
+
 export type UserMoodSerialized = {
   id: number;
   mood_id: number;
@@ -26,6 +31,12 @@ export type UserMoodSerialized = {
   image: string;
   created_at: string; //serialised date
 };
+
+let moodBackgroundColorValue = '#f2658c';
+
+const moodTextStyle = css`
+  font-family: 'Hanalei Fill', cursive;
+`;
 
 const containerStyle = css`
   text-align: center;
@@ -301,7 +312,31 @@ async function moodImageClick(mood_id: number) {
   currentClickedMood = mood_id;
 }
 
-const ColoredLine = ({ color = 'green' }) => (
+function moodBackgroundColorValueUpdate(mood: number) {
+  if (mood === 1) {
+    moodBackgroundColorValue = '#f2658c';
+  } else if (mood === 2) {
+    moodBackgroundColorValue = '#23AAD4';
+  } else if (mood === 3) {
+    moodBackgroundColorValue = '#F23255';
+  } else {
+    moodBackgroundColorValue = '#8d8db9';
+  }
+}
+
+function moodBackgroundColor(mood: number) {
+  if (mood === 1) {
+    return '#f2658c';
+  } else if (mood === 2) {
+    return '#23AAD4';
+  } else if (mood === 3) {
+    return '#F23255';
+  } else {
+    return '#8d8db9';
+  }
+}
+
+const ColoredLine = ({ color = 'f2658c' }) => (
   <hr
     style={{
       color: color,
@@ -314,6 +349,10 @@ const ColoredLine = ({ color = 'green' }) => (
 
 export default function Home(props: Props) {
   const [showAll, setShowAll] = useState(false);
+  const [showHappy, setShowHappy] = useState(true);
+  const [showSad, setShowSad] = useState(true);
+  const [showAngry, setShowAngry] = useState(true);
+  const [showStressed, setShowStressed] = useState(true);
   const [dateValue, setDateValue] = useState(new Date());
   let offset = dateValue.getTimezoneOffset();
   let dateValueCorrected = dateValue;
@@ -323,8 +362,24 @@ export default function Home(props: Props) {
   const [errors, setErrors] = useState<Errors>([]);
   const router = useRouter();
 
-  const handleChange = () => {
+  const handleShowAllChange = () => {
     setShowAll(!showAll);
+  };
+
+  const handleHappyChange = () => {
+    setShowHappy(!showHappy);
+  };
+
+  const handleSadChange = () => {
+    setShowSad(!showSad);
+  };
+
+  const handleAngryChange = () => {
+    setShowAngry(!showAngry);
+  };
+
+  const handleStressedChange = () => {
+    setShowStressed(!showStressed);
   };
 
   return (
@@ -346,18 +401,21 @@ export default function Home(props: Props) {
                 css={input1Style}
                 type="checkbox"
                 checked={showAll}
-                onChange={handleChange}
+                onChange={handleShowAllChange}
               />
-              Show All
+              All Dates
             </label>
 
             <div>
+              {
+                //happy
+              }
               <label>
                 <input
                   css={input2Style}
                   type="checkbox"
-                  checked={showAll}
-                  onChange={handleChange}
+                  checked={showHappy}
+                  onChange={handleHappyChange}
                 />
                 <img
                   src={'/images/moods/image1.png'}
@@ -372,13 +430,15 @@ export default function Home(props: Props) {
                   //}}
                 />
               </label>
-
+              {
+                //sad
+              }
               <label>
                 <input
                   css={input2Style}
                   type="checkbox"
-                  checked={showAll}
-                  onChange={handleChange}
+                  checked={showSad}
+                  onChange={handleSadChange}
                 />
                 <img
                   src={'/images/moods/image2.png'}
@@ -394,12 +454,15 @@ export default function Home(props: Props) {
                 />
               </label>
 
+              {
+                //angry
+              }
               <label>
                 <input
                   css={input2Style}
                   type="checkbox"
-                  checked={showAll}
-                  onChange={handleChange}
+                  checked={showAngry}
+                  onChange={handleAngryChange}
                 />
                 <img
                   src={'/images/moods/image3.png'}
@@ -415,12 +478,15 @@ export default function Home(props: Props) {
                 />
               </label>
 
+              {
+                //stressed
+              }
               <label>
                 <input
                   css={input2Style}
                   type="checkbox"
-                  checked={showAll}
-                  onChange={handleChange}
+                  checked={showStressed}
+                  onChange={handleStressedChange}
                 />
                 <img
                   src={'/images/moods/image4.png'}
@@ -449,35 +515,46 @@ export default function Home(props: Props) {
                       .toISOString()
                       .split('T')[0] // We need to calculate offset, since ISOString considers this and the dates will be wrong if this is not taken into consideration
                 ) {
-                  isShown = true;
+                  if (
+                    (mood.mood_id === 1 && showHappy) ||
+                    (mood.mood_id === 2 && showSad) ||
+                    (mood.mood_id === 3 && showAngry) ||
+                    (mood.mood_id === 4 && showStressed)
+                  )
+                    isShown = true;
+                }
+
+                {
+                  moodBackgroundColorValueUpdate(mood.mood_id);
                 }
 
                 return (
                   <li style={{ display: isShown ? 'inline-block' : 'none' }}>
-                    <div></div>
                     <div>
-                      {
-                        new Date(JSON.parse(mood.created_at))
-                          .toISOString()
-                          .split('T')[0]
-                      }
+                      <div>
+                        {
+                          new Date(JSON.parse(mood.created_at))
+                            .toISOString()
+                            .split('T')[0]
+                        }
+                      </div>
+                      <div key={`mood-${mood.mood_id}`} css={rowStyle}>
+                        <img
+                          src={'/images/moods/image' + mood.mood_id + '.png'}
+                          width="130"
+                          alt="Mood Emojis"
+                          //width="100%"
+                          //height="100%"
+                          //layout="responsive"
+                          //objectFit="cover"
+                          onClick={() => {
+                            moodImageClick(mood.mood_id);
+                          }}
+                        />
+                        <div css={moodTextStyle}>{mood.text}</div>
+                      </div>
+                      <ColoredLine color={moodBackgroundColorValue} />
                     </div>
-                    <div key={`mood-${mood.mood_id}`} css={rowStyle}>
-                      <img
-                        src={'/images/moods/image' + mood.mood_id + '.png'}
-                        width="130"
-                        alt="Mood Emojis"
-                        //width="100%"
-                        //height="100%"
-                        //layout="responsive"
-                        //objectFit="cover"
-                        onClick={() => {
-                          moodImageClick(mood.mood_id);
-                        }}
-                      />
-                      <div>{mood.text}</div>
-                    </div>
-                    <ColoredLine color="#deb1ae" />
                   </li>
                 );
               })}

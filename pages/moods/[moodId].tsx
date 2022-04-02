@@ -201,28 +201,34 @@ export default function Home(props: Props) {
               })
             }
             <div id="suggestion-description" css={suggestionDescriptionBox}>
-              <div css={suggestionNameStyle}>{suggestionName}</div>
-              <div className="suggestionDescription">
-                {suggestionDescription}{' '}
-              </div>
-              {suggestionImageExtra === 'none' || !moodClicked ? (
-                <div></div>
+              {!moodClicked ? (
+                <div> ABCDEFG ABCDEFG ABCDEFG </div>
               ) : (
-                <div className="suggestionExtraImage">
-                  {' '}
-                  <img
-                    src="/images/suggestions/breath-main.gif"
-                    width="146"
-                    alt="emotional emojis"
-                  />
-                </div>
-              )}
-              {suggestionLink === 'none' || !moodClicked ? (
-                <div></div>
-              ) : (
-                <div className="suggestionLink">
-                  {' '}
-                  <a href={suggestionLink}>Click here!</a>
+                <div>
+                  <div css={suggestionNameStyle}>{suggestionName}</div>
+                  <div className="suggestionDescription">
+                    {suggestionDescription}{' '}
+                  </div>
+                  {suggestionImageExtra === 'none' || !moodClicked ? (
+                    <div></div>
+                  ) : (
+                    <div className="suggestionExtraImage">
+                      {' '}
+                      <img
+                        src="/images/suggestions/breath-main.gif"
+                        width="146"
+                        alt="emotional emojis"
+                      />
+                    </div>
+                  )}
+                  {suggestionLink === 'none' || !moodClicked ? (
+                    <div></div>
+                  ) : (
+                    <div className="suggestionLink">
+                      {' '}
+                      <a href={suggestionLink}>Click here!</a>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

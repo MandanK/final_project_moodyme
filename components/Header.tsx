@@ -73,7 +73,9 @@ export default function Header(props: Props) {
             {!props.userObject ? (
               <div></div>
             ) : (
-              props.userObject && <div>{props.userObject.firstname}</div>
+              <div>
+                <a href="/profile">{props.userObject.firstname}</a>
+              </div>
             )}
           </div>
         ) : (

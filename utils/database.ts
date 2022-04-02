@@ -4,7 +4,7 @@ import postgres from 'postgres';
 
 config();
 
-const sql = postgres();
+const sql = postgres({ ssl: require });
 
 export type Mood = {
   mood_id: number;
