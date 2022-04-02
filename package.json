@@ -1,4 +1,10 @@
 {
+  "name": "moody-me",
+  "description": "A Mood Tracking/Changer APP",
+  "version": "1.0.0",
+  "engines": {
+    "node": "17.4.0"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",

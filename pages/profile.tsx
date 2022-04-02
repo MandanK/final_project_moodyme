@@ -477,7 +477,7 @@ export default function Home(props: Props) {
                       />
                       <div>{mood.text}</div>
                     </div>
-                    <ColoredLine color="red" />
+                    <ColoredLine color="#deb1ae" />
                   </li>
                 );
               })}

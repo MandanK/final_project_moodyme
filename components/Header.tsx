@@ -32,6 +32,7 @@ const userObject = css`
   cursor: pointer;
   text-decoration-line: none;
 `;
+
 const linkStyle = css`
   font-weight: bold;
   color: white;
@@ -62,22 +63,16 @@ export default function Header(props: Props) {
         </a>
       </div>
       <div css={userObject}>
-        <Link href="/profile">
-          <a>
-            <div>
-              {props.userObject && <div>{props.userObject.firstname}</div>}
-            </div>
-          </a>
-        </Link>
+        <div>{props.userObject && <div>{props.userObject.firstname}</div>}</div>
         {props.userObject ? (
-          <a href="/register">Register</a>
+          <a href="/logout">Logout</a>
         ) : (
           <>
-            {/*<Link href="/register">
+            <Link href="/register">
               <a css={linkStyle} data-test-id="products-link">
                 Register
               </a>
-        </Link>*/}
+            </Link>
           </>
         )}
       </div>
