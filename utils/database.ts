@@ -13,8 +13,8 @@ export type Mood = {
 };
 
 export type UserMood = {
-  id: int;
-  mood_id: int;
+  id: number;
+  mood_id: number;
   type: string;
   text: string;
   image: string;
