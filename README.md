@@ -1,21 +1,25 @@
-# Progressive Web App Example
+# Read Me
 
-This example uses [`next-pwa`](https://github.com/shadowwalker/next-pwa) to create a progressive web app (PWA) powered by [Workbox](https://developers.google.com/web/tools/workbox/).
+**Moody Me!: A mood tracker/changer**
 
-## Deploy your own
+This mobile app is designed to help you keep the track of your mood throughout the year using emojis. This app allows you to select your mood on daily bases to eventually have a visualisation about the ways you have felt through the year. Using this app you can also add notes on how you have felt whenever you want and you will also be given a set of suggestions to either change your mood (if it is negative) or to boost it (if it is positive).
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+In order to make the app more affective and more user-friendly, SUPR-Q and NPS questionnaires conducted on a grope of six participants from different age groups, gender, and professions.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/progressive-web-app&project-name=progressive-web-app&repository-name=progressive-web-app)
+**Technology:**
 
-## How to use
+This app is simple and yet effective and very easy to use.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+- Next.js
+- TypeScript
+- CSS: Emotion
+- Database: PostgreSQL
+- Testing: Jest-Puppeteer
+- Deployment: Heroku
 
-```bash
-npx create-next-app --example progressive-web-app progressive-web-app
-# or
-yarn create next-app --example progressive-web-app progressive-web-app
-```
+**Features:**
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+- Select your mood any time you want. You have four options to choose from.
+- You can write about how you feel or what is on your mind whenever you want in a safe and familiar environment
+- Track your emotions over time to discover trends in your mental health and become aware in your own mind
+- You can also enjoy the suggestions we provide to boost or change your mood. There are six different suggestion for each mood to help you feel better.

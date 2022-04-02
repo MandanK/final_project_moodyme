@@ -1,3 +1,8 @@
+import {
+  getUserByValidSessionToken,
+  getValidSessionByToken,
+} from '../utils/database';
+
 import { css } from '@emotion/react';
 import Link from 'next/link';
 import { User } from '../utils/database';
@@ -63,17 +68,16 @@ export default function Header(props: Props) {
         </a>
       </div>
       <div css={userObject}>
-        <div>{props.userObject && <div>{props.userObject.firstname}</div>}</div>
         {props.userObject ? (
-          <a href="/logout">Logout</a>
+          <div>
+            {!props.userObject ? (
+              <div></div>
+            ) : (
+              props.userObject && <div>{props.userObject.firstname}</div>
+            )}
+          </div>
         ) : (
-          <>
-            <Link href="/register">
-              <a css={linkStyle} data-test-id="products-link">
-                Register
-              </a>
-            </Link>
-          </>
+          <div></div>
         )}
       </div>
     </header>
