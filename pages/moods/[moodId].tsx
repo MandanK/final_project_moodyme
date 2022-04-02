@@ -264,7 +264,7 @@ export default function Home(props: Props) {
 // (ONLY FILES IN /pages) and gets imported
 // by Next.js
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const moodId = parseInt(context.query.moodId as string);
   const mood = await getMood(moodId);
 
