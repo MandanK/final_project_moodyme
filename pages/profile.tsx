@@ -18,7 +18,7 @@ import {
   getUserMoodByUserId,
 } from '../utils/database';
 
-export type UserMoodSerialised = {
+export type UserMoodSerialized = {
   id: number;
   mood_id: number;
   type: string;
@@ -262,7 +262,7 @@ const privacyStyle = css`
 `;
 
 type Props = {
-  user_moods: UserMood[];
+  user_moods: UserMoodSerialized[];
   userObject: { username: string; firstname: string };
   moods: Mood[];
   refreshUserProfile: () => void;
@@ -540,7 +540,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const user = await getUserByValidSessionToken(token);
 
-  let user_moods_serialized = [] as UserMoodSerialised[];
+  let user_moods_serialized = [] as UserMoodSerialized[];
 
   // 2. If there is a user, return that and render page
 
@@ -550,7 +550,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (user) {
       const user_Moods = await getUserMoodByUserId(user.id);
       user_Moods.map((user_mood) => {
-        let user_mood_serialized: UserMoodSerialised = {
+        let user_mood_serialized: UserMoodSerialized = {
           id: user_mood.id,
           mood_id: user_mood.mood_id,
           type: user_mood.type,
