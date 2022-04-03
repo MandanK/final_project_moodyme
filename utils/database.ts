@@ -19,6 +19,9 @@ module.exports = function setPostgresDefaultsOnHeroku() {
 
 config();
 
+// Heroku needs SSL connections but
+// has an "unauthorized" certificate
+// https://devcenter.heroku.com/changelog-items/852
 const sql = postgres({ ssl: { rejectUnauthorized: false } });
 
 export type Mood = {

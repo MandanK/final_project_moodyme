@@ -284,7 +284,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   ) {
     return {
       redirect: {
-        destination: `https://${context.req.headers.host}/root`,
+        destination: `https://${context.req.headers.host}/`,
         permanent: true,
       },
     };
