@@ -23,7 +23,8 @@
     "pages/moods.js",
     "pages/moods.js",
     "utils/database.ts",
-    "pages/_app.tsx"
+    "pages/_app.tsx",
+    "pages/root.text"
   ],
   "exclude": ["node_modules"]
 }

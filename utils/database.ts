@@ -18,8 +18,14 @@ module.exports = function setPostgresDefaultsOnHeroku() {
 };
 
 config();
+let sql = postgres();
 
-const sql = postgres({ ssl: { rejectUnauthorized: false } });
+if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+  // Heroku needs SSL connections but
+  // has an "unauthorized" certificate
+  // https://devcenter.heroku.com/changelog-items/852
+  sql = postgres({ ssl: { rejectUnauthorized: false } });
+}
 
 export type Mood = {
   mood_id: number;
