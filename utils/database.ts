@@ -2,6 +2,7 @@ import camelcaseKeys from 'camelcase-keys';
 import { config } from 'dotenv-safe';
 import postgres from 'postgres';
 
+/*
 module.exports = function setPostgresDefaultsOnHeroku() {
   if (process.env.DATABASE_URL) {
     const { parse } = require('pg-connection-string');
@@ -16,10 +17,12 @@ module.exports = function setPostgresDefaultsOnHeroku() {
     process.env.PGPASSWORD = password;
   }
 };
+*/
 
 config();
 
-const sql = postgres({ ssl: { rejectUnauthorized: false } });
+//const sql = postgres({ ssl: { rejectUnauthorized: false } });
+const sql = postgres();
 
 export type Mood = {
   mood_id: number;
