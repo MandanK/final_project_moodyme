@@ -25,18 +25,6 @@ const moodEmojiStyle = css`
   margin-bottom: 25px;
 `;
 
-const boxStyle = css`
-  display: inline-flex;
-`;
-
-const textStyle = css`
-  font-size: 18px;
-  padding-top: 15px;
-`;
-
-const catStyle = css`
-  padding-top: 13px;
-`;
 const rowStyleSuggestions = css`
   width: 27%;
   margin-left: 2px;
@@ -171,7 +159,7 @@ export default function Home(props: Props) {
                 <a>
                   <img
                     src={'/images/moods/image' + props.moodId + '.png'}
-                    width="190"
+                    width="170"
                     alt="Mood image"
                   />
                 </a>
@@ -214,17 +202,7 @@ export default function Home(props: Props) {
             }
             <div id="suggestion-description" css={suggestionDescriptionBox}>
               {!moodClicked ? (
-                <div css={boxStyle}>
-                  <p css={textStyle}>
-                    We are here to make you feel better. Go ahead and press ☝
-                  </p>
-                  <img
-                    css={catStyle}
-                    src="/images/moods/cat.gif"
-                    width="146"
-                    alt="emotional emojis"
-                  />{' '}
-                </div>
+                <div> ABCDEFG ABCDEFG ABCDEFG </div>
               ) : (
                 <div>
                   <div css={suggestionNameStyle}>{suggestionName}</div>

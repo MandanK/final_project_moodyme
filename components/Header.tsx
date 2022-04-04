@@ -27,8 +27,10 @@ const headerStyles = css`
 const userObject = css`
   margin-top: 5px;
   float: right;
+  margin-left: 20px;
+  margin-right: 5px;
   margin-top: 19px;
-  margin-right: 18px;
+  margin-right: 11px;
   font-weight: bold;
   color: white;
   font-size: 16px;
@@ -65,16 +67,14 @@ export default function Header(props: Props) {
           />
         </a>
       </div>
-      <div>
+      <div css={userObject}>
         {props.userObject ? (
           <div>
             {!props.userObject ? (
               <div></div>
             ) : (
               <div>
-                <a css={userObject} href="/profile">
-                  {props.userObject.firstname}
-                </a>
+                <a href="/profile">{props.userObject.firstname}</a>
               </div>
             )}
           </div>

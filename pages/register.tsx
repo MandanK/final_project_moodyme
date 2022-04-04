@@ -96,7 +96,7 @@ export default function Register(props: Props) {
         <meta name="description" content="Register on this website" />
       </Head>
       <div css={logoStyle}>
-        <a href="/">
+        <a href="/moods">
           <img src="/images/logo.png" width="113" alt="emotional emojis" />
         </a>
       </div>
