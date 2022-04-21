@@ -23,3 +23,7 @@ This app is simple and yet effective and very easy to use.
 - You can write about how you feel or what is on your mind whenever you want in a safe and familiar environment
 - Track your emotions over time to discover trends in your mental health and become aware in your own mind
 - You can also enjoy the suggestions we provide to boost or change your mood. There are six different suggestion for each mood to help you feel better.
+
+**Screenshots**
+
+https://docs.google.com/presentation/d/1wtqfl9McBSdEiOBJ2QylT6vcbEw1IiITWusvj9ZR6_k/edit?usp=sharing
