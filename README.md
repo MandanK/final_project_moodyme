@@ -2,7 +2,7 @@
 
 **Moody Me!: A mood tracker/changer**
 
-This mobile app is designed to help you keep the track of your mood throughout the year using emojis. This app allows you to select your mood on daily bases to eventually have a visualisation about the ways you have felt through the year. Using this app you can also add notes on how you have felt whenever you want and you will also be given a set of suggestions to either change your mood (if it is negative) or to boost it (if it is positive).
+This mobile app is designed to help you keep the track of your mood throughout the year using emojis and animations. This app allows you to select your mood on daily bases to eventually have a visualisation about the ways you have felt through the year. Using this app you can also add notes on how you have felt whenever you want and you will also be given a set of suggestions to either change your mood (if it is negative) or to boost it (if it is positive).
 
 In order to make the app more affective and more user-friendly, SUPR-Q and NPS questionnaires conducted on a grope of six participants from different age groups, gender, and professions.
 
