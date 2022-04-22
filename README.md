@@ -26,5 +26,5 @@ This app is simple and yet effective and very easy to use.
 
 **Screenshots**
 
-[Moody Me](https://docs.google.com/presentation/d/1wtqfl9McBSdEiOBJ2QylT6vcbEw1IiITWusvj9ZR6_k/edit?usp=sharing)
+[Moody Me-presentation](https://docs.google.com/presentation/d/1wtqfl9McBSdEiOBJ2QylT6vcbEw1IiITWusvj9ZR6_k/edit?usp=sharing)
 
